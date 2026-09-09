@@ -8,10 +8,90 @@
 import SwiftUI
 
 struct FocusView: View {
+    
+    @State private var viewModel = FocusViewModel()
+    @State private var showingActiveSession = false
+    
     var body: some View {
         NavigationStack {
-            Text("Focus Session")
-                .navigationTitle("Focus")
+            VStack(alignment: .center) {
+                
+                Spacer()
+                
+                Section {
+                    VStack {
+                        HStack(spacing: 6) {
+                            Text("Focus Duration")
+                                .font(.headline)
+                                .padding(.horizontal, 10)
+                            
+                            Spacer()
+                            
+                            TextField(
+                                "Minutes",
+                                value: $viewModel.focusMinutes,
+                                format: .number
+                            )
+                            .keyboardType(.numberPad)
+                            .textFieldStyle(.roundedBorder)
+                            .padding(.horizontal, 40)
+                        }
+                        
+                        HStack(spacing: 6) {
+                            Text("Break Duration")
+                                .font(.headline)
+                                .padding(.horizontal, 10)
+                            
+                            Spacer()
+                            
+                            TextField(
+                                "Minutes",
+                                value: $viewModel.breakMinutes,
+                                format: .number
+                            )
+                            .keyboardType(.numberPad)
+                            .textFieldStyle(.roundedBorder)
+                            .padding(.horizontal, 40)
+                        }
+                    }
+                }
+                
+                Spacer()
+                
+                Section {
+                    Button("Start Study Session") {
+                        if viewModel.startStudySession() {
+                            showingActiveSession = true
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .padding(.top, 20)
+                    
+                }
+                
+                Spacer()
+            }
+            .navigationTitle("Focus")
+            .navigationDestination(isPresented: $showingActiveSession) {
+                ActiveStudySessionView(viewModel: viewModel)
+            }
+            .alert(
+                "Unable to Start Session",
+                isPresented: Binding (
+                    get: { viewModel.errorMessage != nil },
+                    set: {
+                        if !$0 {
+                            viewModel.errorMessage = nil
+                        }
+                    }
+                )
+            ) {
+                Button("OK") {
+                    viewModel.errorMessage = nil
+                }
+            } message: {
+                Text(viewModel.errorMessage ?? "")
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NewAcademicTaskView: View {
     
-    @Binding var viewModel: StudyPlanViewModel
+    @Bindable var viewModel: StudyPlanViewModel
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -66,10 +66,4 @@ struct NewAcademicTaskView: View {
             }
         }
     }
-}
-
-#Preview {
-    NewAcademicTaskView(
-        viewModel: .constant(StudyPlanViewModel())
-    )
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CreateStudySessionUseCase {
+struct StartStudySessionUseCase {
     
     func execute(
         focusMinutes: Int,

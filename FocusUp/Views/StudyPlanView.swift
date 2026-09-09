@@ -57,7 +57,7 @@ struct StudyPlanView: View {
             }
             .sheet(isPresented: $showingNewTaskView) {
                 NewAcademicTaskView (
-                    viewModel: $viewModel
+                    viewModel: viewModel
                 )
             }
         }

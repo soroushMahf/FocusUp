@@ -18,3 +18,10 @@ struct StudySession: Identifiable {
         completedAt != nil
     }
 }
+
+enum StudySessionPhase: Equatable {
+    case firstHalfFocus
+    case breakTime
+    case secondHalfFocus
+    case completed
+}
