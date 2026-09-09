@@ -10,6 +10,8 @@ import SwiftUI
 struct ActiveStudySessionView: View {
     
     @Bindable var viewModel: FocusViewModel
+    @Bindable var studentProgressViewModel: StudentProgressViewModel
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         VStack(spacing: 30) {
@@ -26,6 +28,22 @@ struct ActiveStudySessionView: View {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size:40))
                 }
+                
+                Spacer()
+                
+                Button("Done"){
+                    if let session = viewModel.activeSession {
+                        studentProgressViewModel.recordCompletedSession(
+                            studyMinutes: session.focusMinutes
+                        )
+                    }
+                    viewModel.resetSession()
+                    dismiss()
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.extraLarge)
+                .font(.system(size: 20, weight: .bold))
+                
             } else {
                 Text(viewModel.formattedRemainingTime)
                     .font(.system(size: 64, weight: .bold, design: .rounded))
@@ -106,6 +124,7 @@ struct ActiveStudySessionView: View {
         .padding()
         .navigationTitle("FocusUp Session")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
     }
     
     var phaseTitle: String {

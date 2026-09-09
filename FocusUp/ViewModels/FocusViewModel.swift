@@ -31,6 +31,7 @@ final class FocusViewModel {
         (focusMinutes * 60) - firstHalfFocusSeconds
     }
     
+    var progress = StudentProgress()
     
     private let startStudySessionUseCase = StartStudySessionUseCase()
     
@@ -130,10 +131,19 @@ final class FocusViewModel {
         }
     }
     
+    func skipBreak() {
+        guard sessionPhase == .breakTime else { return }
+        
+        sessionPhase = .secondHalfFocus
+        remainingSeconds = secondHalfFocusSeconds
+    }
+    
     private func completeSession() {
         stopTimer()
         sessionPhase = .completed
         remainingSeconds = 0
+        
+        activeSession?.completedAt = Date()
     }
     
     func endSessionEarly() {
@@ -143,10 +153,10 @@ final class FocusViewModel {
         sessionPhase = .completed
     }
     
-    func skipBreak() {
-        guard sessionPhase == .breakTime else { return }
-        
-        sessionPhase = .secondHalfFocus
-        remainingSeconds = secondHalfFocusSeconds
+    func resetSession() {
+        activeSession = nil
+        remainingSeconds = 0
+        sessionPhase = .firstHalfFocus
+        isTimerRunning = false
     }
 }

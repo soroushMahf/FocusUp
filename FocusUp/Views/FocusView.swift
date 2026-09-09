@@ -12,6 +12,8 @@ struct FocusView: View {
     @State private var viewModel = FocusViewModel()
     @State private var showingActiveSession = false
     
+    @Bindable var studentProgressViewModel: StudentProgressViewModel
+    
     var body: some View {
         NavigationStack {
             VStack(alignment: .center) {
@@ -65,6 +67,7 @@ struct FocusView: View {
                         }
                     }
                     .buttonStyle(.borderedProminent)
+                    .bold()
                     .padding(.top, 20)
                     
                 }
@@ -73,7 +76,10 @@ struct FocusView: View {
             }
             .navigationTitle("Focus")
             .navigationDestination(isPresented: $showingActiveSession) {
-                ActiveStudySessionView(viewModel: viewModel)
+                ActiveStudySessionView(
+                    viewModel: viewModel,
+                    studentProgressViewModel: studentProgressViewModel
+                )
             }
             .alert(
                 "Unable to Start Session",
@@ -97,5 +103,5 @@ struct FocusView: View {
 }
 
 #Preview {
-    FocusView()
+//    FocusView()
 }
