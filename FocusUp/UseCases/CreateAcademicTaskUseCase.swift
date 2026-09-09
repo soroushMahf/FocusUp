@@ -6,7 +6,7 @@
 //
 
 // Creates a new academic task after validating the student's input
-// Addresses all the errors that can occur as outlined within Academic Task Error
+// Addresses all the errors that can occur as outlined within AcademicTaskError
 
 import Foundation
 
