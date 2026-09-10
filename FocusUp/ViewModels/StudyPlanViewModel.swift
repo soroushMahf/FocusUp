@@ -14,9 +14,9 @@ final class StudyPlanViewModel {
     
     var tasks: [AcademicTask] = []
     
-    var title = ""
-    var subjectName = ""
-    var deadline = Date()
+    var taskTitle = ""
+    var taskSubjectName = ""
+    var taskDeadline = Date()
     var taskPriority: TaskPriority = .medium
     
     var errorMessage: String?
@@ -27,9 +27,9 @@ final class StudyPlanViewModel {
     func addTask() -> Bool {
         do {
             let newTask = try createAcademicTaskUseCase.execute(
-                title: title,
-                subjectName: subjectName,
-                deadline: deadline,
+                taskTitle: taskTitle,
+                taskSubjectName: taskSubjectName,
+                taskDeadline: taskDeadline,
                 taskPriority: taskPriority
             )
             
@@ -44,24 +44,24 @@ final class StudyPlanViewModel {
     }
     
     private func clearForm() {
-        title = ""
-        subjectName = ""
-        deadline = Date()
+        taskTitle = ""
+        taskSubjectName = ""
+        taskDeadline = Date()
         taskPriority = .medium
     }
     
     init() {
         let sampleTasks: [AcademicTask] = [
             AcademicTask(
-                title: "Study for the exam",
-                subjectName: "Math",
-                deadline: Date(),
+                taskTitle: "Study for the exam",
+                taskSubjectName: "Math",
+                taskDeadline: Date(),
                 taskPriority: .high
             ),
             AcademicTask(
-                title: "Complete Assignment",
-                subjectName: "Science",
-                deadline: Date(),
+                taskTitle: "Complete Assignment",
+                taskSubjectName: "Science",
+                taskDeadline: Date(),
                 taskPriority: .low
             )
         ]

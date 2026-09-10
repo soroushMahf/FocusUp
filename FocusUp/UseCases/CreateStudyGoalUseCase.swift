@@ -13,30 +13,30 @@ import Foundation
 struct CreateStudyGoalUseCase {
     
     func execute(
-        title: String,
-        targetMinutes: Int,
-        deadline: Date,
+        goalTitle: String,
+        goalTargetMinutes: Int,
+        goalDeadline: Date,
         currentDate: Date = Date()
     ) throws -> StudyGoal {
         
-        let cleanedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        let cleanedTitle = goalTitle.trimmingCharacters(in: .whitespacesAndNewlines)
         
         guard !cleanedTitle.isEmpty else {
             throw StudyGoalError.missingTitle
         }
         
-        guard targetMinutes > 0 else {
+        guard goalTargetMinutes > 0 else {
             throw StudyGoalError.invalidTargetDuration
         }
         
-        guard deadline > currentDate else {
+        guard goalDeadline > currentDate else {
             throw StudyGoalError.deadlineInPast
         }
         
         return StudyGoal (
-            title: cleanedTitle,
-            targetMinutes: targetMinutes,
-            deadline: deadline
+            goalTitle: cleanedTitle,
+            goalTargetMinutes: goalTargetMinutes,
+            goalDeadline: goalDeadline
         )
     }
 }

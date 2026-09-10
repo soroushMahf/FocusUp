@@ -13,33 +13,33 @@ import Foundation
 struct CreateAcademicTaskUseCase {
     
     func execute(
-        title: String,
-        subjectName: String,
-        deadline: Date,
+        taskTitle: String,
+        taskSubjectName: String,
+        taskDeadline: Date,
         taskPriority: TaskPriority,
         currentDate: Date = Date()
     ) throws -> AcademicTask {
         
-        let cleanedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        let cleanedTaskTitle = taskTitle.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        let cleanedSubject = subjectName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let cleanedTaskSubject = taskSubjectName.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        guard !cleanedTitle.isEmpty else {
+        guard !cleanedTaskTitle.isEmpty else {
             throw AcademicTaskError.missingTitle
         }
         
-        guard !cleanedSubject.isEmpty else {
+        guard !cleanedTaskSubject.isEmpty else {
             throw AcademicTaskError.missingSubject
         }
         
-        guard deadline > currentDate else {
+        guard taskDeadline > currentDate else {
             throw AcademicTaskError.deadlineInPast
         }
         
         return AcademicTask(
-            title: cleanedTitle,
-            subjectName: cleanedSubject,
-            deadline: deadline,
+            taskTitle: cleanedTaskTitle,
+            taskSubjectName: cleanedTaskSubject,
+            taskDeadline: taskDeadline,
             taskPriority: taskPriority
         )
     }

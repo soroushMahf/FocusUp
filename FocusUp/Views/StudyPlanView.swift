@@ -24,19 +24,19 @@ struct StudyPlanView: View {
                 } else {
                     ForEach(viewModel.tasks) { task in
                         VStack(alignment: .leading, spacing: 6) {
-                            Text(task.title)
+                            Text(task.taskTitle)
                                 .font(.headline)
-                            Text(task.subjectName)
+                            Text(task.taskSubjectName)
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                             
                             HStack {
-                                Text(task.deadline, style: .date)
+                                Text(task.taskDeadline, style: .date)
                                     .font(.subheadline)
                                 
                                 Spacer()
                                 
-                                Text(task.taskPriority.rawValue.capitalized)
+                                Text(task.taskPriority.rawValue)
                                     .font(.caption)
                                     .foregroundStyle(task.taskPriority.color)
                                     .bold()

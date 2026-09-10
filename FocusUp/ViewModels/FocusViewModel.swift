@@ -143,7 +143,7 @@ final class FocusViewModel {
         sessionPhase = .completed
         remainingSeconds = 0
         
-        activeSession?.completedAt = Date()
+        activeSession?.studyCompletedAt = Date()
     }
     
     func endSessionEarly() {

@@ -10,11 +10,11 @@ import SwiftUI
 
 struct AcademicTask: Identifiable {
     let id: UUID = UUID()
-    let title: String
-    let subjectName: String
-    let deadline: Date
+    let taskTitle: String
+    let taskSubjectName: String
+    let taskDeadline: Date
     let taskPriority: TaskPriority
-    var isCompleted: Bool = false
+    var istaskCompleted: Bool = false
 }
 
 enum TaskPriority: String, CaseIterable {

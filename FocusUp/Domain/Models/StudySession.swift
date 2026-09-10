@@ -12,10 +12,10 @@ struct StudySession: Identifiable {
     let focusMinutes: Int
     let breakMinutes: Int
     let startedAt: Date
-    var completedAt: Date?
+    var studyCompletedAt: Date?
     
     var isCompleted: Bool {
-        completedAt != nil
+        studyCompletedAt != nil
     }
 }
 

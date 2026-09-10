@@ -16,11 +16,11 @@ struct NewAcademicTaskView: View {
         NavigationStack{
             Form {
                 Section {
-                    TextField("Task Title", text: $viewModel.title)
-                    TextField("Subject Name ", text: $viewModel.subjectName)
+                    TextField("Task Title", text: $viewModel.taskTitle)
+                    TextField("Subject Name ", text: $viewModel.taskSubjectName)
                 }
                 Section {
-                    DatePicker("Deadline", selection: $viewModel.deadline, displayedComponents: .date)
+                    DatePicker("Deadline", selection: $viewModel.taskDeadline, displayedComponents: .date)
                     Picker("Priority", selection: $viewModel.taskPriority) {
                         ForEach(TaskPriority.allCases, id: \.self) { priority in
                                 Text(priority.rawValue).tag(priority)
