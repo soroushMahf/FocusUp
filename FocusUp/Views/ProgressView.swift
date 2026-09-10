@@ -9,21 +9,50 @@ import SwiftUI
 
 struct ProgressView: View {
     
-    @Bindable var viewModel: StudentProgressViewModel
+    @Bindable var studentProgressViewModel: StudentProgressViewModel
+    @Bindable var studyGoalViewModel: StudyGoalViewModel
     
     var body: some View {
         NavigationStack {
-            Form {
-                Section("Study Progress") {
+            List {
+                Section("Overall Progress") {
                     LabeledContent(
                         "Total Study Time",
-                        value: "\(viewModel.progress.totalStudyMinutes) min"
+                        value: "\(studentProgressViewModel.progress.totalStudyMinutes) min"
                     )
                     
                     LabeledContent(
                         "Completed FocusUp Sessions",
-                        value: "\(viewModel.progress.completedSessions)"
+                        value: "\(studentProgressViewModel.progress.completedSessions)"
                     )
+                }
+                
+                Section("Study Goals") {
+                    if studyGoalViewModel.goals.isEmpty {
+                        Text("You don't have any study goals yet.")
+                    } else {
+                        ForEach(studyGoalViewModel.goals) { goal in
+                            VStack (alignment: .leading, spacing: 20){
+                                HStack {
+                                    Text(goal.goalTitle)
+                                        .font(.headline)
+        
+                                    Spacer()
+        
+                                    Text(goal.goalDeadline, style: .date)
+                                        .font(.caption2)
+                                }
+        
+        
+                                //Using SwiftUI before ProgressView as XCode confuses it with the ProgressView file
+                                SwiftUI.ProgressView(value: goal.progress)
+        
+                                Text("\(goal.goalCompletedMinutes) / \(goal.goalTargetMinutes) minutes")
+                                    .font(.system(size: 14))
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                            }
+                        }
+                    }
                 }
             }
             .navigationTitle("Progress")
@@ -32,5 +61,5 @@ struct ProgressView: View {
 }
 
 #Preview {
-    ProgressView(viewModel: StudentProgressViewModel())
+    ProgressView(studentProgressViewModel: StudentProgressViewModel(), studyGoalViewModel: StudyGoalViewModel())
 }

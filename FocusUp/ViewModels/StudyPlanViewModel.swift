@@ -43,6 +43,22 @@ final class StudyPlanViewModel {
         }
     }
     
+    func completeTask(_ task: AcademicTask) {
+        guard let index = tasks.firstIndex(where: { $0.id == task.id }) else {
+            return
+        }
+        
+        tasks[index].isTaskCompleted.toggle() // might have to change this to = true
+    }
+    
+    func deleteTask(_ task: AcademicTask) {
+        guard let index = tasks.firstIndex(where: { $0.id == task.id }) else {
+            return
+        }
+        
+        tasks.remove(at: index)
+    }
+    
     private func clearForm() {
         taskTitle = ""
         taskSubjectName = ""

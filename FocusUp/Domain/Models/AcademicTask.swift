@@ -14,7 +14,7 @@ struct AcademicTask: Identifiable {
     let taskSubjectName: String
     let taskDeadline: Date
     let taskPriority: TaskPriority
-    var istaskCompleted: Bool = false
+    var isTaskCompleted: Bool = false
 }
 
 enum TaskPriority: String, CaseIterable {

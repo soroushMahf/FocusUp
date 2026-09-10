@@ -10,10 +10,12 @@ import SwiftUI
 struct RootView: View {
     
     @State private var studentProgressViewModel = StudentProgressViewModel()
+    @State private var studyGoalViewModel = StudyGoalViewModel()
+    @State private var studyPlanViewModel = StudyPlanViewModel()
     
     var body: some View {
         TabView {
-            HomeView()
+            HomeView(studyGoalViewModel: studyGoalViewModel, studyPlanViewModel: studyPlanViewModel)
                 .tabItem {
                     Label("Home", systemImage: "house.fill")
                 }
@@ -28,7 +30,7 @@ struct RootView: View {
                     Label("Focus", systemImage: "timer")
                 }
             
-            ProgressView(viewModel: studentProgressViewModel)
+            ProgressView(studentProgressViewModel: studentProgressViewModel, studyGoalViewModel: studyGoalViewModel)
                 .tabItem {
                     Label("Progress", systemImage: "chart.bar.xaxis")
                 }

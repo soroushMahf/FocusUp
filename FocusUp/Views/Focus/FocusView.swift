@@ -18,8 +18,6 @@ struct FocusView: View {
         NavigationStack {
             VStack(alignment: .center) {
                 
-                Spacer()
-                
                 Section {
                     VStack {
                         HStack(spacing: 6) {
@@ -56,9 +54,8 @@ struct FocusView: View {
                             .padding(.horizontal, 40)
                         }
                     }
+                    .padding(.top, 40)
                 }
-                
-                Spacer()
                 
                 Section {
                     Button("Start Study Session") {
@@ -103,5 +100,5 @@ struct FocusView: View {
 }
 
 #Preview {
-//    FocusView()
+    FocusView(studentProgressViewModel: StudentProgressViewModel())
 }
