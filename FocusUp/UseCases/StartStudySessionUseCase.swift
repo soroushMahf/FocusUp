@@ -17,9 +17,9 @@ struct StartStudySessionUseCase {
         currentDate: Date = Date()
     ) throws -> StudySession {
         
-//        guard (10...240).contains(focusMinutes) else {
-//            throw StudySessionError.invalidFocusDuration
-//        }
+        guard (10...240).contains(focusMinutes) else {
+            throw StudySessionError.invalidFocusDuration
+        }
         
         if focusMinutes >= 60 && breakMinutes == 0 {
             throw StudySessionError.breakRequired
