@@ -12,6 +12,16 @@ import Foundation
 
 struct CreateStudyGoalUseCase {
     
+    private let persistenceController: PersistenceController
+    
+    init(persistenceController: PersistenceController) {
+        self.persistenceController = persistenceController
+    }
+    
+    init() {
+        self.persistenceController = .shared
+    }
+    
     func execute(
         goalTitle: String,
         goalTargetMinutes: Int,
@@ -33,10 +43,14 @@ struct CreateStudyGoalUseCase {
             throw StudyGoalError.deadlineInPast
         }
         
-        return StudyGoal (
+        let newGoal = StudyGoal (
             goalTitle: cleanedTitle,
             goalTargetMinutes: goalTargetMinutes,
             goalDeadline: goalDeadline
         )
+        
+        try persistenceController.saveGoal(newGoal)
+        
+        return newGoal
     }
 }

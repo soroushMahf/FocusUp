@@ -12,6 +12,16 @@ import Foundation
 
 struct CreateAcademicTaskUseCase {
     
+    private let persistenceController: PersistenceController
+    
+    init(persistenceController: PersistenceController) {
+        self.persistenceController = persistenceController
+    }
+    
+    init() {
+        self.persistenceController = .shared
+    }
+    
     func execute(
         taskTitle: String,
         taskSubjectName: String,
@@ -36,11 +46,15 @@ struct CreateAcademicTaskUseCase {
             throw AcademicTaskError.deadlineInPast
         }
         
-        return AcademicTask(
+        let newTask = AcademicTask(
             taskTitle: cleanedTaskTitle,
             taskSubjectName: cleanedTaskSubject,
             taskDeadline: taskDeadline,
             taskPriority: taskPriority
         )
+        
+        try persistenceController.saveTask(newTask)
+        
+        return newTask
     }
 }

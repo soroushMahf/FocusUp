@@ -18,20 +18,38 @@ final class StudyGoalViewModel {
     
     var errorMessage: String?
     
+    private let persistenceController = PersistenceController.shared
     private let createStudyGoalUseCase = CreateStudyGoalUseCase()
+    
+    init() {
+        loadGoals()
+    }
+    
+    func loadGoals() {
+        do {
+            goals = try persistenceController.fetchGoals()
+            errorMessage = nil
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
     
     func addGoal() -> Bool {
         do {
-            let newGoal = try createStudyGoalUseCase.execute(
+            _ = try createStudyGoalUseCase.execute(
                 goalTitle: goalTitle,
                 goalTargetMinutes: goalTargetMinutes,
                 goalDeadline: goalDeadline
             )
             
-            goals.append(newGoal)
+            loadGoals()
+            
             clearForm()
             
+            errorMessage = nil
+            
             return true
+            
         } catch {
             errorMessage = error.localizedDescription
             return false
@@ -39,34 +57,29 @@ final class StudyGoalViewModel {
     }
     
     func addStudyMinutes(_ minutes: Int, to goalID: UUID) {
-        guard let index = goals.firstIndex(where: { $0.id == goalID }) else { return }
-        
-        goals[index].goalCompletedMinutes += minutes
+
+        guard let goal = goals.first(where: { $0.id == goalID }) else { return }
+
+        var updatedGoal = goal
+
+        updatedGoal.goalCompletedMinutes += minutes
+
+        do {
+            try persistenceController.updateGoal(updatedGoal)
+
+            loadGoals()
+
+            errorMessage = nil
+
+        } catch {
+            errorMessage = error.localizedDescription
+        }
     }
     
     private func clearForm() {
         goalTitle = ""
         goalTargetMinutes = 60
         goalDeadline = Date()
-    }
-    
-    init() {
-        let sampleGoals: [StudyGoal] = [
-            StudyGoal(
-                goalTitle: "Keep Studies Up",
-                goalTargetMinutes: 60,
-                goalDeadline: Date(),
-                goalCompletedMinutes: 30
-            ),
-            StudyGoal(
-                goalTitle: "Weekly Study",
-                goalTargetMinutes: 360,
-                goalDeadline: Date(),
-                goalCompletedMinutes: 0
-            )
-        ]
-        
-        self.goals = sampleGoals
     }
 }
 

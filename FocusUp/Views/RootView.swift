@@ -15,7 +15,10 @@ struct RootView: View {
     
     var body: some View {
         TabView {
-            HomeView(studyGoalViewModel: studyGoalViewModel, studyPlanViewModel: studyPlanViewModel)
+            HomeView(
+                studyGoalViewModel: studyGoalViewModel,
+                studyPlanViewModel: studyPlanViewModel
+            )
                 .tabItem {
                     Label("Home", systemImage: "house.fill")
                 }
@@ -34,7 +37,10 @@ struct RootView: View {
                     Label("Focus", systemImage: "timer")
                 }
             
-            ProgressView(studentProgressViewModel: studentProgressViewModel, studyGoalViewModel: studyGoalViewModel)
+            ProgressView(
+                studentProgressViewModel: studentProgressViewModel,
+                studyGoalViewModel: studyGoalViewModel
+            )
                 .tabItem {
                     Label("Progress", systemImage: "chart.bar.xaxis")
                 }

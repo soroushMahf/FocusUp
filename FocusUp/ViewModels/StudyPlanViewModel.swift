@@ -21,20 +21,39 @@ final class StudyPlanViewModel {
     
     var errorMessage: String?
     
+    private let persistenceController = PersistenceController.shared
     private let createAcademicTaskUseCase = CreateAcademicTaskUseCase()
+    
+    init() {
+        loadTasks()
+    }
+    
+    func loadTasks() {
+        do {
+            tasks = try persistenceController.fetchTasks()
+            errorMessage = nil
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
     
     // returning a bool so that the new task sheet can be dismissed only if the task is added successfully
     func addTask() -> Bool {
         do {
-            let newTask = try createAcademicTaskUseCase.execute(
+            // as the task is being added through the execute function, it does not need to be appended here
+            _ = try createAcademicTaskUseCase.execute(
                 taskTitle: taskTitle,
                 taskSubjectName: taskSubjectName,
                 taskDeadline: taskDeadline,
                 taskPriority: taskPriority
             )
             
-            tasks.append(newTask)
+            loadTasks()
+            
             clearForm()
+            
+            errorMessage = nil
+            
             return true
             
         } catch {
@@ -44,19 +63,32 @@ final class StudyPlanViewModel {
     }
     
     func completeTask(_ task: AcademicTask) {
-        guard let index = tasks.firstIndex(where: { $0.id == task.id }) else {
-            return
-        }
+        var updatedTask = task
         
-        tasks[index].isTaskCompleted.toggle() // might have to change this to = true
+        updatedTask.isTaskCompleted.toggle()
+        
+        do {
+            try persistenceController.updateTask(updatedTask)
+            
+            loadTasks()
+            
+            errorMessage = nil
+        } catch {
+            errorMessage = error.localizedDescription
+        }
     }
     
     func deleteTask(_ task: AcademicTask) {
-        guard let index = tasks.firstIndex(where: { $0.id == task.id }) else {
-            return
+        do {
+            try persistenceController.deleteTask(task)
+            
+            loadTasks()
+            
+            errorMessage = nil
+            
+        } catch {
+            errorMessage = error.localizedDescription
         }
-        
-        tasks.remove(at: index)
     }
     
     private func clearForm() {
@@ -64,24 +96,5 @@ final class StudyPlanViewModel {
         taskSubjectName = ""
         taskDeadline = Date()
         taskPriority = .medium
-    }
-    
-    init() {
-        let sampleTasks: [AcademicTask] = [
-            AcademicTask(
-                taskTitle: "Study for the exam",
-                taskSubjectName: "Math",
-                taskDeadline: Date(),
-                taskPriority: .high
-            ),
-            AcademicTask(
-                taskTitle: "Complete Assignment",
-                taskSubjectName: "Science",
-                taskDeadline: Date(),
-                taskPriority: .low
-            )
-        ]
-        
-        self.tasks = sampleTasks
     }
 }
