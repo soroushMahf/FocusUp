@@ -11,6 +11,7 @@ struct ActiveStudySessionView: View {
     
     @Bindable var viewModel: FocusViewModel
     @Bindable var studentProgressViewModel: StudentProgressViewModel
+    @Bindable var studyGoalViewModel: StudyGoalViewModel
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -19,6 +20,16 @@ struct ActiveStudySessionView: View {
             Text(phaseTitle)
                 .font(.title2)
                 .fontWeight(.semibold)
+            
+            if(viewModel.sessionPhase == .firstHalfFocus) {
+                Text("~ First Half of Study Session ~")
+                    .font(.title3)
+            }
+            
+            if(viewModel.sessionPhase == .secondHalfFocus) {
+                Text("~ Second Half of Study Session ~")
+                    .font(.title3)
+            }
             
             if viewModel.sessionPhase == .completed {
                 VStack(spacing: 20) {
@@ -35,6 +46,10 @@ struct ActiveStudySessionView: View {
                     if let session = viewModel.activeSession {
                         studentProgressViewModel.recordCompletedSession(
                             studyMinutes: session.focusMinutes
+                        )
+                        
+                        studyGoalViewModel.addStudyMinutes(
+                            session.focusMinutes
                         )
                     }
                     viewModel.resetSession()

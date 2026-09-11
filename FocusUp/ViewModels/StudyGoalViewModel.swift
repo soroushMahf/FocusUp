@@ -38,6 +38,12 @@ final class StudyGoalViewModel {
         }
     }
     
+    func addStudyMinutes(_ minutes: Int) {
+        guard !goals.isEmpty else { return }
+        
+        goals[0].goalCompletedMinutes += minutes
+    }
+    
     private func clearForm() {
         goalTitle = ""
         goalTargetMinutes = 60

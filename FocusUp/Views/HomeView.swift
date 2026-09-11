@@ -11,6 +11,7 @@ struct HomeView: View {
     
     @Bindable var studyGoalViewModel: StudyGoalViewModel
     @State private var showingNewGoalView = false
+    
     @Bindable var studyPlanViewModel: StudyPlanViewModel
     
     var body: some View {
@@ -46,6 +47,40 @@ struct HomeView: View {
                     }
                 }
                 
+                Section("Tasks Due Today") {
+                    let todayTasks = studyPlanViewModel.tasks.filter {
+                        Calendar.current.isDateInToday($0.taskDeadline) && !$0.isTaskCompleted
+                    }
+                    
+                    if todayTasks.isEmpty {
+                        Text("No tasks due today.")
+                            .foregroundStyle(.secondary)
+                    } else {
+                        ForEach(todayTasks) { task in
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(task.taskTitle)
+                                    .font(.headline)
+                                
+                                Text(task.taskSubjectName)
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                                
+                                HStack {
+                                    Text(task.taskDeadline, style: .date)
+                                        .font(.subheadline)
+                                    
+                                    Spacer()
+                                    
+                                    Text(task.taskPriority.rawValue)
+                                        .font(.caption)
+                                        .foregroundStyle(task.taskPriority.color)
+                                        .bold()
+                                }
+                            }
+                        }
+                    }
+                }
+                
                 Section ("Quick Summary") {
                     HStack {
                         Text("Number of Goals")
@@ -55,7 +90,7 @@ struct HomeView: View {
                     HStack {
                         Text("Number of Academic Tasks")
                         Spacer()
-                        Text("\(studyPlanViewModel.tasks.count)")
+                        Text("\(studyPlanViewModel.tasks.filter({ !$0.isTaskCompleted }).count)")
                     }
                     
                     

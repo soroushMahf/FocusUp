@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StudyPlanView: View {
     
-    @State private var viewModel = StudyPlanViewModel()
+    @Bindable var viewModel: StudyPlanViewModel
     @State private var showingNewTaskView = false
     
     var body: some View {
@@ -127,5 +127,5 @@ struct StudyPlanView: View {
 }
 
 #Preview {
-    StudyPlanView()
+    StudyPlanView(viewModel: StudyPlanViewModel())
 }

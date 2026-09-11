@@ -13,6 +13,7 @@ struct FocusView: View {
     @State private var showingActiveSession = false
     
     @Bindable var studentProgressViewModel: StudentProgressViewModel
+    @Bindable var studyGoalViewModel: StudyGoalViewModel
     
     var body: some View {
         NavigationStack {
@@ -75,7 +76,8 @@ struct FocusView: View {
             .navigationDestination(isPresented: $showingActiveSession) {
                 ActiveStudySessionView(
                     viewModel: viewModel,
-                    studentProgressViewModel: studentProgressViewModel
+                    studentProgressViewModel: studentProgressViewModel,
+                    studyGoalViewModel: studyGoalViewModel
                 )
             }
             .alert(
@@ -100,5 +102,5 @@ struct FocusView: View {
 }
 
 #Preview {
-    FocusView(studentProgressViewModel: StudentProgressViewModel())
+    FocusView(studentProgressViewModel: StudentProgressViewModel(), studyGoalViewModel: StudyGoalViewModel())
 }

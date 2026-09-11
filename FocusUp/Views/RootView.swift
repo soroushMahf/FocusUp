@@ -20,12 +20,12 @@ struct RootView: View {
                     Label("Home", systemImage: "house.fill")
                 }
             
-            StudyPlanView()
+            StudyPlanView(viewModel: studyPlanViewModel)
                 .tabItem {
                     Label("Study Plan", systemImage: "calendar")
                 }
             
-            FocusView(studentProgressViewModel: studentProgressViewModel)
+            FocusView(studentProgressViewModel: studentProgressViewModel, studyGoalViewModel: studyGoalViewModel)
                 .tabItem {
                     Label("Focus", systemImage: "timer")
                 }
