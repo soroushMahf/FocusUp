@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct AcademicTask: Identifiable {
+struct AcademicTask: Identifiable, Hashable {
     let id: UUID = UUID()
     let taskTitle: String
     let taskSubjectName: String
@@ -17,7 +17,7 @@ struct AcademicTask: Identifiable {
     var isTaskCompleted: Bool = false
 }
 
-enum TaskPriority: String, CaseIterable {
+enum TaskPriority: String, CaseIterable, Hashable {
     case low = "Low Priority"
     case medium = "Medium Priority"
     case high = "High Priority"

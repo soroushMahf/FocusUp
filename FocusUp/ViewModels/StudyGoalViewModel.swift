@@ -38,10 +38,10 @@ final class StudyGoalViewModel {
         }
     }
     
-    func addStudyMinutes(_ minutes: Int) {
-        guard !goals.isEmpty else { return }
+    func addStudyMinutes(_ minutes: Int, to goalID: UUID) {
+        guard let index = goals.firstIndex(where: { $0.id == goalID }) else { return }
         
-        goals[0].goalCompletedMinutes += minutes
+        goals[index].goalCompletedMinutes += minutes
     }
     
     private func clearForm() {

@@ -25,7 +25,11 @@ struct RootView: View {
                     Label("Study Plan", systemImage: "calendar")
                 }
             
-            FocusView(studentProgressViewModel: studentProgressViewModel, studyGoalViewModel: studyGoalViewModel)
+            FocusView(
+                studentProgressViewModel: studentProgressViewModel,
+                studyGoalViewModel: studyGoalViewModel,
+                studyPlanViewModel: studyPlanViewModel
+            )
                 .tabItem {
                     Label("Focus", systemImage: "timer")
                 }

@@ -10,6 +10,9 @@ import Foundation
 @Observable
 final class FocusViewModel {
     
+    var selectedTask: AcademicTask?
+    var selectedStudyGoal: StudyGoal?
+    
     var focusMinutes: Int = 60
     var breakMinutes: Int = 5
     
@@ -38,6 +41,8 @@ final class FocusViewModel {
     func startStudySession() -> Bool {
         do {
             activeSession = try startStudySessionUseCase.execute(
+                academicTaskID: selectedTask?.id,
+                studyGoalID: selectedStudyGoal?.id,
                 focusMinutes: focusMinutes,
                 breakMinutes: breakMinutes
             )

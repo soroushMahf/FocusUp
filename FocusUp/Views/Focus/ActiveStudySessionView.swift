@@ -12,7 +12,24 @@ struct ActiveStudySessionView: View {
     @Bindable var viewModel: FocusViewModel
     @Bindable var studentProgressViewModel: StudentProgressViewModel
     @Bindable var studyGoalViewModel: StudyGoalViewModel
+    @Bindable var studyPlanViewModel: StudyPlanViewModel
     @Environment(\.dismiss) private var dismiss
+    
+    var selectedTask: AcademicTask? {
+        guard let taskID = viewModel.activeSession?.academicTaskID else { return nil }
+        
+        return studyPlanViewModel.tasks.first {
+            $0.id == taskID
+        }
+    }
+    
+    var selectedStudyGoal: StudyGoal? {
+        guard let goalID = viewModel.activeSession?.studyGoalID else { return nil }
+        
+        return studyGoalViewModel.goals.first {
+            $0.id == goalID
+        }
+    }
     
     var body: some View {
         VStack(spacing: 30) {
@@ -47,10 +64,13 @@ struct ActiveStudySessionView: View {
                         studentProgressViewModel.recordCompletedSession(
                             studyMinutes: session.focusMinutes
                         )
-                        
-                        studyGoalViewModel.addStudyMinutes(
-                            session.focusMinutes
-                        )
+                    
+                        if let goalID = session.studyGoalID {
+                            studyGoalViewModel.addStudyMinutes(
+                                session.focusMinutes,
+                                to: goalID
+                            )
+                        }
                     }
                     viewModel.resetSession()
                     dismiss()
@@ -69,6 +89,24 @@ struct ActiveStudySessionView: View {
                 if viewModel.sessionPhase == .breakTime {
                     Text("Stretch - Hydrate - Rest")
                 } else {
+                    HStack {
+                        if let task = selectedTask {
+                            Text("Focus Task")
+                            Spacer()
+                            Text(task.taskTitle)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    
+                    HStack {
+                        if let goal = selectedStudyGoal {
+                            Text("Focus Goal")
+                            Spacer()
+                            Text(goal.goalTitle)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    
                     HStack {
                         Text("Total Focus Duration")
                         Spacer()
@@ -154,4 +192,8 @@ struct ActiveStudySessionView: View {
             return "FocusUp Session Completed!"
         }
     }
+}
+
+#Preview {
+    ActiveStudySessionView(viewModel: FocusViewModel(), studentProgressViewModel: StudentProgressViewModel(), studyGoalViewModel: StudyGoalViewModel(), studyPlanViewModel: StudyPlanViewModel())
 }

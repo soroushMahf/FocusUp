@@ -9,6 +9,10 @@ import Foundation
 
 struct StudySession: Identifiable {
     let id: UUID = UUID()
+    
+    let academicTaskID: UUID?
+    let studyGoalID: UUID?
+    
     let focusMinutes: Int
     let breakMinutes: Int
     let startedAt: Date

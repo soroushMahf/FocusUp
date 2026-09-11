@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct StudyGoal: Identifiable {
+struct StudyGoal: Identifiable, Hashable {
     let id: UUID = UUID()
     let goalTitle: String
     let goalTargetMinutes: Int

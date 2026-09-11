@@ -10,6 +10,8 @@ import Foundation
 struct StartStudySessionUseCase {
     
     func execute(
+        academicTaskID: UUID? = nil,
+        studyGoalID: UUID? = nil,
         focusMinutes: Int,
         breakMinutes: Int,
         currentDate: Date = Date()
@@ -28,6 +30,8 @@ struct StartStudySessionUseCase {
         }
         
         return StudySession (
+            academicTaskID: academicTaskID,
+            studyGoalID: studyGoalID,
             focusMinutes: focusMinutes,
             breakMinutes: breakMinutes,
             startedAt: currentDate

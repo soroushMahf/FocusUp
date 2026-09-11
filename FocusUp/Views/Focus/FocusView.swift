@@ -14,48 +14,69 @@ struct FocusView: View {
     
     @Bindable var studentProgressViewModel: StudentProgressViewModel
     @Bindable var studyGoalViewModel: StudyGoalViewModel
+    @Bindable var studyPlanViewModel: StudyPlanViewModel
     
     var body: some View {
         NavigationStack {
-            VStack(alignment: .center) {
+            Form {
                 
-                Section {
-                    VStack {
-                        HStack(spacing: 6) {
-                            Text("Focus Duration")
-                                .font(.headline)
-                                .padding(.horizontal, 10)
-                            
-                            Spacer()
-                            
-                            TextField(
-                                "Minutes",
-                                value: $viewModel.focusMinutes,
-                                format: .number
-                            )
-                            .keyboardType(.numberPad)
-                            .textFieldStyle(.roundedBorder)
-                            .padding(.horizontal, 40)
-                        }
+                Section("Task/Goal Specific Focus") {
+                    Picker("Academic Task", selection: $viewModel.selectedTask) {
+                        Text("None")
+                            .tag(nil as AcademicTask?)
                         
-                        HStack(spacing: 6) {
-                            Text("Break Duration")
-                                .font(.headline)
-                                .padding(.horizontal, 10)
-                            
-                            Spacer()
-                            
-                            TextField(
-                                "Minutes",
-                                value: $viewModel.breakMinutes,
-                                format: .number
-                            )
-                            .keyboardType(.numberPad)
-                            .textFieldStyle(.roundedBorder)
-                            .padding(.horizontal, 40)
+                        ForEach(
+                            studyPlanViewModel.tasks.filter { !$0.isTaskCompleted }
+                        ) { task in
+                            Text("\(task.taskTitle) \n - \(task.taskSubjectName)")
+                                .tag(task as AcademicTask?)
                         }
                     }
-                    .padding(.top, 40)
+                    
+                    Picker("Study Goal", selection: $viewModel.selectedStudyGoal) {
+                        Text("None")
+                            .tag(nil as StudyGoal?)
+                        
+                        ForEach(
+                            studyGoalViewModel.goals) { goal in
+                                Text("\(goal.goalTitle) \n\(goal.progress.formatted(.percent.precision(.fractionLength(0...2)))) progression")
+                                    .tag(goal as StudyGoal?)
+                        }
+                    }
+                }
+                
+                Section("Task Duration") {
+                    HStack(spacing: 6) {
+                        Text("Focus Duration")
+                            .font(.headline)
+                            .padding(.horizontal, 10)
+                        
+                        Spacer()
+                        
+                        TextField(
+                            "Minutes",
+                            value: $viewModel.focusMinutes,
+                            format: .number
+                        )
+                        .keyboardType(.numberPad)
+                        .textFieldStyle(.roundedBorder)
+                    }
+                    
+                    HStack(spacing: 6) {
+                        Text("Break Duration")
+                            .font(.headline)
+                            .padding(.horizontal, 10)
+                        
+                        Spacer()
+                        
+                        TextField(
+                            "Minutes",
+                            value: $viewModel.breakMinutes,
+                            format: .number
+                        )
+                        .keyboardType(.numberPad)
+                        .textFieldStyle(.roundedBorder)
+                    }
                 }
                 
                 Section {
@@ -66,18 +87,20 @@ struct FocusView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .bold()
-                    .padding(.top, 20)
-                    
+                    .frame(maxWidth: .infinity)
+                    .listRowBackground(Color.clear)
                 }
                 
-                Spacer()
+                
+
             }
             .navigationTitle("Focus")
             .navigationDestination(isPresented: $showingActiveSession) {
                 ActiveStudySessionView(
                     viewModel: viewModel,
                     studentProgressViewModel: studentProgressViewModel,
-                    studyGoalViewModel: studyGoalViewModel
+                    studyGoalViewModel: studyGoalViewModel,
+                    studyPlanViewModel: studyPlanViewModel
                 )
             }
             .alert(
@@ -102,5 +125,9 @@ struct FocusView: View {
 }
 
 #Preview {
-    FocusView(studentProgressViewModel: StudentProgressViewModel(), studyGoalViewModel: StudyGoalViewModel())
+    FocusView(
+        studentProgressViewModel: StudentProgressViewModel(),
+        studyGoalViewModel: StudyGoalViewModel(),
+        studyPlanViewModel: StudyPlanViewModel()
+    )
 }
