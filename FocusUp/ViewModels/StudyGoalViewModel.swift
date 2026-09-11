@@ -18,6 +18,12 @@ final class StudyGoalViewModel {
     
     var errorMessage: String?
     
+    var goalDueSoon: StudyGoal? {
+        goals
+            .filter { $0.goalDeadline >= Date() }
+            .min { $0.goalDeadline < $1.goalDeadline }
+    }
+    
     private let persistenceController = PersistenceController.shared
     private let createStudyGoalUseCase = CreateStudyGoalUseCase()
     
@@ -53,6 +59,19 @@ final class StudyGoalViewModel {
         } catch {
             errorMessage = error.localizedDescription
             return false
+        }
+    }
+    
+    func deleteGoal(_ goal: StudyGoal) {
+        do {
+            try persistenceController.deleteGoal(goal)
+
+            loadGoals()
+
+            errorMessage = nil
+
+        } catch {
+            errorMessage = error.localizedDescription
         }
     }
     

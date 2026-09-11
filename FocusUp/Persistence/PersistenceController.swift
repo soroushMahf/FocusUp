@@ -158,6 +158,24 @@ final class PersistenceController {
         }
     }
     
+    func deleteGoal(_ goal: StudyGoal) throws {
+
+        let goalID = goal.id
+
+        let descriptor = FetchDescriptor<StoredStudyGoal>(
+            predicate: #Predicate {
+                $0.id == goalID
+            }
+        )
+        guard let storedGoal = try context.fetch(descriptor).first else {
+            return
+        }
+
+        context.delete(storedGoal)
+
+        try context.save()
+    }
+    
     func updateGoal(_ goal: StudyGoal) throws {
         
         let goalID = goal.id

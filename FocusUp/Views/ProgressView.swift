@@ -12,6 +12,8 @@ struct ProgressView: View {
     @Bindable var studentProgressViewModel: StudentProgressViewModel
     @Bindable var studyGoalViewModel: StudyGoalViewModel
     
+    @State private var showingNewGoalView = false
+    
     var body: some View {
         NavigationStack {
             List {
@@ -43,7 +45,6 @@ struct ProgressView: View {
                                         .font(.caption2)
                                 }
         
-        
                                 //Using SwiftUI before ProgressView as XCode confuses it with the ProgressView file
                                 SwiftUI.ProgressView(value: goal.progress)
         
@@ -51,11 +52,33 @@ struct ProgressView: View {
                                     .font(.system(size: 14))
                                     .frame(maxWidth: .infinity, alignment: .center)
                             }
+                            .swipeActions(edge: .trailing) {
+                                Button {
+                                    studyGoalViewModel.deleteGoal(goal)
+                                } label: {
+                                    Label("Remove Goal", systemImage: "trash.fill")
+                                }
+                                .tint(.red)
+                            }
                         }
                     }
                 }
             }
             .navigationTitle("Progress")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingNewGoalView = true
+                    } label : {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingNewGoalView) {
+                NavigationStack {
+                    NewStudyGoalView(viewModel: studyGoalViewModel)
+                }
+            }
         }
     }
 }

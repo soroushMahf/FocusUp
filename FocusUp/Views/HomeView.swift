@@ -10,15 +10,13 @@ import SwiftUI
 struct HomeView: View {
     
     @Bindable var studyGoalViewModel: StudyGoalViewModel
-    @State private var showingNewGoalView = false
-    
     @Bindable var studyPlanViewModel: StudyPlanViewModel
     
     var body: some View {
         NavigationStack {
             List {
                 Section("Priority Study Goal") {
-                    if let goal = studyGoalViewModel.goals.first {
+                    if let goal = studyGoalViewModel.goalDueSoon {
                         VStack (alignment: .leading, spacing: 20){
                             HStack {
                                 Text(goal.goalTitle)
@@ -92,25 +90,9 @@ struct HomeView: View {
                         Spacer()
                         Text("\(studyPlanViewModel.tasks.filter({ !$0.isTaskCompleted }).count)")
                     }
-                    
-                    
                 }
             }
             .navigationTitle("FocusUp")
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showingNewGoalView = true
-                    } label : {
-                        Image(systemName: "plus")
-                    }
-                }
-            }
-            .sheet(isPresented: $showingNewGoalView) {
-                NavigationStack {
-                    NewStudyGoalView(viewModel: studyGoalViewModel)
-                }
-            }
         }
     }
 }
