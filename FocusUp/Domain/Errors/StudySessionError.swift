@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum StudySessionError: LocalizedError {
+enum StudySessionError: LocalizedError, Equatable {
     case invalidFocusDuration
     case breakRequired
     case invalidBreakDuration
@@ -18,7 +18,7 @@ enum StudySessionError: LocalizedError {
             return "Focus Sessions must be between 10 and 240 minutes long"
             
         case .breakRequired:
-            return "Focus Sessions longer than 60 mins require a break"
+            return "Focus Sessions 60 minutes or longer require a break"
             
         case .invalidBreakDuration:
             return "Choose a break duration between 0 and 30 minutes"

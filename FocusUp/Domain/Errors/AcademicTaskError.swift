@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AcademicTaskError: LocalizedError {
+enum AcademicTaskError: LocalizedError, Equatable {
     case missingTitle
     case deadlineInPast
     case missingSubject

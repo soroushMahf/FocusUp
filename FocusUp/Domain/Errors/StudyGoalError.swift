@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum StudyGoalError: LocalizedError {
+enum StudyGoalError: LocalizedError, Equatable {
     case missingTitle
     case invalidTargetDuration
     case deadlineInPast

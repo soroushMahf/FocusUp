@@ -19,13 +19,19 @@ final class PersistenceController {
         container.mainContext
     }
     
-    private init() {
+    //inMemory is used for Unit Testing. It provides an in-memory dataset for testing.
+    //The inMemory is set to false for the app itself, while for testing it is set to true.
+    
+    init(inMemory: Bool = false) {
         do {
+            let configuration = ModelConfiguration(isStoredInMemoryOnly: inMemory)
+            
             container = try ModelContainer(
                 for:
                     StoredAcademicTask.self,
                     StoredStudyGoal.self,
-                    StoredStudentProgress.self
+                    StoredStudentProgress.self,
+                configurations: configuration
             )
         } catch {
             fatalError(
