@@ -18,6 +18,7 @@ final class StudyPlanViewModel {
     var taskSubjectName = ""
     var taskDeadline = Date()
     var taskPriority: TaskPriority = .medium
+    var estimatedStudyMinutes = 240
     
     var errorMessage: String?
     
@@ -45,7 +46,8 @@ final class StudyPlanViewModel {
                 taskTitle: taskTitle,
                 taskSubjectName: taskSubjectName,
                 taskDeadline: taskDeadline,
-                taskPriority: taskPriority
+                taskPriority: taskPriority,
+                estimatedStudyMinutes: estimatedStudyMinutes
             )
             
             loadTasks()
@@ -96,5 +98,17 @@ final class StudyPlanViewModel {
         taskSubjectName = ""
         taskDeadline = Date()
         taskPriority = .medium
+        estimatedStudyMinutes = 240
+    }
+    
+    var estimatedStudyTimeText: String {
+        let hours = estimatedStudyMinutes / 60
+        let minutes = estimatedStudyMinutes % 60
+        
+        if hours == 0 {
+            return "\(minutes) min"
+        } else {
+            return "\(hours) hr \(minutes) min"
+        }
     }
 }

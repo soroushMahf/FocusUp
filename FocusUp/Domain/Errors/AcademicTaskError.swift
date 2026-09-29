@@ -11,6 +11,7 @@ enum AcademicTaskError: LocalizedError, Equatable {
     case missingTitle
     case deadlineInPast
     case missingSubject
+    case invalidEstimatedStudy
     
     var errorDescription: String? {
         switch self {
@@ -22,6 +23,9 @@ enum AcademicTaskError: LocalizedError, Equatable {
             
         case .missingSubject:
             return "Enter the subject this task belongs to."
+            
+        case .invalidEstimatedStudy:
+            return "Enter an estimated study time greater than 0 minutes"
         }
     }
 }

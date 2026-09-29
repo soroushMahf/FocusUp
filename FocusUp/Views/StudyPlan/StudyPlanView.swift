@@ -28,9 +28,16 @@ struct StudyPlanView: View {
                                 Text(task.taskTitle)
                                     .font(.headline)
                                 
-                                Text(task.taskSubjectName)
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
+                                HStack {
+                                    Text(task.taskSubjectName)
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                    
+                                    Spacer()
+                                    
+                                    Text("\(viewModel.estimatedStudyTimeText)")
+                                        .font(.subheadline)
+                                }
                                 
                                 HStack {
                                     Text(task.taskDeadline, style: .date)

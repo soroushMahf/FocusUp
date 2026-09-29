@@ -33,6 +33,7 @@ struct CreateAcademicTaskUseCaseTests {
             taskSubjectName: "Advanced iOS Development",
             taskDeadline: futureDeadline,
             taskPriority: .high,
+            estimatedStudyMinutes: 120,
             currentDate: currentDate
         )
         
@@ -40,6 +41,7 @@ struct CreateAcademicTaskUseCaseTests {
         #expect(task.taskSubjectName == "Advanced iOS Development")
         #expect(task.taskDeadline == futureDeadline)
         #expect(task.taskPriority == .high)
+        #expect(task.estimatedStudyMinutes == 120)
         #expect(task.isTaskCompleted == false)
         
         //testing if task is also saved
@@ -56,6 +58,7 @@ struct CreateAcademicTaskUseCaseTests {
                 taskSubjectName: "Advanced iOS Development",
                 taskDeadline: futureDeadline,
                 taskPriority: .high,
+                estimatedStudyMinutes: 120,
                 currentDate: currentDate
             )
         }
@@ -69,6 +72,7 @@ struct CreateAcademicTaskUseCaseTests {
                 taskSubjectName: "",
                 taskDeadline: futureDeadline,
                 taskPriority: .high,
+                estimatedStudyMinutes: 120,
                 currentDate: currentDate
             )
         }
@@ -84,6 +88,7 @@ struct CreateAcademicTaskUseCaseTests {
                 taskSubjectName: "Advanced iOS Development",
                 taskDeadline: pastDeadline,
                 taskPriority: .high,
+                estimatedStudyMinutes: 120,
                 currentDate: currentDate
             )
         }
@@ -97,6 +102,7 @@ struct CreateAcademicTaskUseCaseTests {
                 taskSubjectName: "Advanced iOS Development",
                 taskDeadline: currentDate,
                 taskPriority: .high,
+                estimatedStudyMinutes: 120,
                 currentDate: currentDate
             )
         }

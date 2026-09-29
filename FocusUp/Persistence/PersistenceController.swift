@@ -50,6 +50,7 @@ final class PersistenceController {
             taskSubjectName: task.taskSubjectName,
             taskDeadline: task.taskDeadline,
             taskPriority: task.taskPriority.rawValue,
+            estimatedStudyMinutes: task.estimatedStudyMinutes,
             isTaskCompleted: task.isTaskCompleted
         )
         
@@ -82,6 +83,7 @@ final class PersistenceController {
                 taskSubjectName: storedTask.taskSubjectName,
                 taskDeadline: storedTask.taskDeadline,
                 taskPriority: priority,
+                estimatedStudyMinutes: storedTask.estimatedStudyMinutes,
                 isTaskCompleted: storedTask.isTaskCompleted
             )
         }
@@ -122,6 +124,7 @@ final class PersistenceController {
         storedTask.taskSubjectName = task.taskSubjectName
         storedTask.taskDeadline = task.taskDeadline
         storedTask.taskPriority = task.taskPriority.rawValue
+        storedTask.estimatedStudyMinutes = task.estimatedStudyMinutes
         storedTask.isTaskCompleted = task.isTaskCompleted
 
         try context.save()

@@ -27,6 +27,14 @@ struct NewAcademicTaskView: View {
                         }
                     }
                 }
+                Section("Study Estimate") {
+                    Stepper(
+                        "Estimated Study Time: \n\(viewModel.estimatedStudyTimeText)",
+                        value: $viewModel.estimatedStudyMinutes,
+                        in: 30...3000,
+                        step: 30
+                    )
+                }
             }
             .navigationTitle("New Academic Task")
             .navigationBarTitleDisplayMode(.inline)

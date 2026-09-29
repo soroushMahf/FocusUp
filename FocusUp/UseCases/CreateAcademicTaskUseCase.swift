@@ -27,6 +27,7 @@ struct CreateAcademicTaskUseCase {
         taskSubjectName: String,
         taskDeadline: Date,
         taskPriority: TaskPriority,
+        estimatedStudyMinutes: Int,
         currentDate: Date = Date()
     ) throws -> AcademicTask {
         
@@ -46,11 +47,16 @@ struct CreateAcademicTaskUseCase {
             throw AcademicTaskError.deadlineInPast
         }
         
+        guard estimatedStudyMinutes > 0 else {
+            throw AcademicTaskError.invalidEstimatedStudy
+        }
+        
         let newTask = AcademicTask(
             taskTitle: cleanedTaskTitle,
             taskSubjectName: cleanedTaskSubject,
             taskDeadline: taskDeadline,
-            taskPriority: taskPriority
+            taskPriority: taskPriority,
+            estimatedStudyMinutes: estimatedStudyMinutes
         )
         
         try persistenceController.saveTask(newTask)
