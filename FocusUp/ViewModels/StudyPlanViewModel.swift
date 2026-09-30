@@ -10,6 +10,7 @@
 import Foundation
 
 @Observable
+@MainActor
 final class StudyPlanViewModel {
     
     var tasks: [AcademicTask] = []
@@ -22,16 +23,19 @@ final class StudyPlanViewModel {
     
     var errorMessage: String?
     
-    private let persistenceController = PersistenceController.shared
-    private let createAcademicTaskUseCase = CreateAcademicTaskUseCase()
+    private let repository: AcademicTaskRepository
+    private let createAcademicTaskUseCase: CreateAcademicTaskUseCase
     
-    init() {
+    init(repository: AcademicTaskRepository) {
+        self.repository = repository
+        self.createAcademicTaskUseCase = CreateAcademicTaskUseCase(repository: repository)
+        
         loadTasks()
     }
     
     func loadTasks() {
         do {
-            tasks = try persistenceController.fetchTasks()
+            tasks = try repository.fetchTasks()
             errorMessage = nil
         } catch {
             errorMessage = error.localizedDescription
@@ -70,7 +74,7 @@ final class StudyPlanViewModel {
         updatedTask.isTaskCompleted.toggle()
         
         do {
-            try persistenceController.updateTask(updatedTask)
+            try repository.updateTask(updatedTask)
             
             loadTasks()
             
@@ -82,7 +86,7 @@ final class StudyPlanViewModel {
     
     func deleteTask(_ task: AcademicTask) {
         do {
-            try persistenceController.deleteTask(task)
+            try repository.deleteTask(task)
             
             loadTasks()
             

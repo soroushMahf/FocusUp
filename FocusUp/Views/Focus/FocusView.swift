@@ -128,6 +128,6 @@ struct FocusView: View {
     FocusView(
         studentProgressViewModel: StudentProgressViewModel(),
         studyGoalViewModel: StudyGoalViewModel(),
-        studyPlanViewModel: StudyPlanViewModel()
+        studyPlanViewModel: StudyPlanViewModel(repository: SwiftDataAcademicTaskRepository())
     )
 }

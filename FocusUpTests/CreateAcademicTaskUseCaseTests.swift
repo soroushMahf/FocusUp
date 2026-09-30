@@ -12,17 +12,19 @@ import Foundation
 @MainActor
 struct CreateAcademicTaskUseCaseTests {
 
-    let persistenceController: PersistenceController
+    let repository = MockAcademicTaskRepository()
     let useCase: CreateAcademicTaskUseCase
     
-    let currentDate = Date()
-    let futureDeadline = Date().addingTimeInterval(60 * 60 * 24) // making the deadline tomorrow
+    let currentDate: Date
+    let futureDeadline: Date
     
     init() {
-        persistenceController = PersistenceController(inMemory: true)
         useCase = CreateAcademicTaskUseCase(
-            persistenceController: persistenceController
+            repository: repository
         )
+        
+        currentDate = Date()
+        futureDeadline = currentDate.addingTimeInterval(60 * 60 * 24) // making the deadline tomorrow
     }
     
     @Test("Academic task is created and saved when all required details are valid")
@@ -45,7 +47,7 @@ struct CreateAcademicTaskUseCaseTests {
         #expect(task.isTaskCompleted == false)
         
         //testing if task is also saved
-        let savedTasks = try persistenceController.fetchTasks()
+        let savedTasks = try repository.fetchTasks()
         
         #expect(savedTasks.count == 1)
     }

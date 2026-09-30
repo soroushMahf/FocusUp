@@ -195,5 +195,5 @@ struct ActiveStudySessionView: View {
 }
 
 #Preview {
-    ActiveStudySessionView(viewModel: FocusViewModel(), studentProgressViewModel: StudentProgressViewModel(), studyGoalViewModel: StudyGoalViewModel(), studyPlanViewModel: StudyPlanViewModel())
+    ActiveStudySessionView(viewModel: FocusViewModel(), studentProgressViewModel: StudentProgressViewModel(), studyGoalViewModel: StudyGoalViewModel(), studyPlanViewModel: StudyPlanViewModel(repository: SwiftDataAcademicTaskRepository()))
 }

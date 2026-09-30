@@ -134,5 +134,5 @@ struct StudyPlanView: View {
 }
 
 #Preview {
-    StudyPlanView(viewModel: StudyPlanViewModel())
+    StudyPlanView(viewModel: StudyPlanViewModel(repository: SwiftDataAcademicTaskRepository()))
 }

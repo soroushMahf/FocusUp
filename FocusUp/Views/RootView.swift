@@ -11,7 +11,7 @@ struct RootView: View {
     
     @State private var studentProgressViewModel = StudentProgressViewModel()
     @State private var studyGoalViewModel = StudyGoalViewModel()
-    @State private var studyPlanViewModel = StudyPlanViewModel()
+    @State private var studyPlanViewModel = StudyPlanViewModel(repository: SwiftDataAcademicTaskRepository())
     
     var body: some View {
         TabView {

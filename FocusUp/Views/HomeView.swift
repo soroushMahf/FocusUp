@@ -98,5 +98,8 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView(studyGoalViewModel: StudyGoalViewModel(), studyPlanViewModel: StudyPlanViewModel())
+    HomeView(
+        studyGoalViewModel: StudyGoalViewModel(),
+             studyPlanViewModel: StudyPlanViewModel(repository: SwiftDataAcademicTaskRepository())
+    )
 }

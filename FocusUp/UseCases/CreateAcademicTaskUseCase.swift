@@ -12,14 +12,15 @@ import Foundation
 
 struct CreateAcademicTaskUseCase {
     
-    private let persistenceController: PersistenceController
+    private let repository: AcademicTaskRepository
     
-    init(persistenceController: PersistenceController) {
-        self.persistenceController = persistenceController
+    init(repository: AcademicTaskRepository) {
+        self.repository = repository
     }
     
+    @MainActor
     init() {
-        self.persistenceController = .shared
+        self.repository = SwiftDataAcademicTaskRepository()
     }
     
     func execute(
@@ -59,7 +60,7 @@ struct CreateAcademicTaskUseCase {
             estimatedStudyMinutes: estimatedStudyMinutes
         )
         
-        try persistenceController.saveTask(newTask)
+        try repository.saveTask(newTask)
         
         return newTask
     }
