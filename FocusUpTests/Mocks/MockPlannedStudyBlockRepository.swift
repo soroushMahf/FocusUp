@@ -34,4 +34,8 @@ final class MockPlannedStudyBlockRepository: PlannedStudyBlockRepository {
     func deletePlannedStudyBlock(_ block: PlannedStudyBlock) throws {
         blocks.removeAll { $0.id == block.id }
     }
+    
+    func deleteAllPlannedStudyBlocks() throws {
+        blocks.removeAll()
+    }
 }

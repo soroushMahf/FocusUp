@@ -13,4 +13,5 @@ protocol PlannedStudyBlockRepository {
     func savePlannedStudyBlock(_ block: PlannedStudyBlock) throws
     func updatePlannedStudyBlock(_ block: PlannedStudyBlock) throws
     func deletePlannedStudyBlock(_ block: PlannedStudyBlock) throws
+    func deleteAllPlannedStudyBlocks() throws
 }

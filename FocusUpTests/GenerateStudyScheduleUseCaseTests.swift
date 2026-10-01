@@ -240,4 +240,62 @@ struct GenerateStudyScheduleUseCaseTests {
         
         #expect(blocks[1].academicTaskID == laterTask.id)
     }
+    
+    @Test("Generating a new study schedule replaces the existing schedule")
+    func existingScheduleIsReplaced() throws {
+        
+        let taskRepository = MockAcademicTaskRepository()
+        let availabilityRepository = MockStudyAvailabilityRepository()
+        let blockRepository = MockPlannedStudyBlockRepository()
+        
+        let currentDate = makeDate(year: 2026, month: 10, day: 5)
+        
+        let task = AcademicTask(
+            taskTitle: "Complete AT3",
+            taskSubjectName: "Advanced iOS Development",
+            taskDeadline: makeDate(year: 2026, month: 10, day: 6),
+            taskPriority: .high,
+            estimatedStudyMinutes: 120
+        )
+        
+        taskRepository.tasks = [task]
+        
+        availabilityRepository.availability = [
+            StudyAvailability(
+                weekday: .monday,
+                availableStudyMinutes: 120
+            )
+        ]
+        
+        let oldBlock = PlannedStudyBlock(
+            academicTaskID: task.id,
+            scheduledDate: currentDate,
+            plannedStudyMinutes: 60
+        )
+        
+        blockRepository.blocks = [oldBlock]
+        
+        let useCase = GenerateStudyScheduleUseCase(
+            academicTaskRepository: taskRepository,
+            studyAvailabilityRepository: availabilityRepository,
+            plannedStudyBlockRepository: blockRepository
+        )
+        
+        let generatedBlocks = try useCase.execute(
+            currentDate: currentDate
+        )
+        
+        #expect(generatedBlocks.count == 1)
+        
+        // Old schedule has been replaced,
+        // rather than appended to.
+        #expect(blockRepository.blocks.count == 1)
+        
+        #expect(blockRepository.blocks.first?.id != oldBlock.id)
+        
+        #expect(
+            blockRepository.blocks.first?
+                .plannedStudyMinutes == 120
+        )
+    }
 }

@@ -116,6 +116,8 @@ struct GenerateStudyScheduleUseCase {
                 throw StudyScheduleError.insufficientStudyAvailability
             }
         }
+        
+        try plannedStudyBlockRepository.deleteAllPlannedStudyBlocks()
 
         // Only persist after the entire schedule has been successfully generated
         for block in generatedBlocks {
