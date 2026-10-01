@@ -26,6 +26,8 @@ final class MockAcademicTaskRepository: AcademicTaskRepository {
         ) else {
             return
         }
+        
+        tasks[index] = task
     }
     
     func deleteTask(_ task: AcademicTask) throws {

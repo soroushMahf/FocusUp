@@ -31,6 +31,8 @@ final class PersistenceController {
                     StoredAcademicTask.self,
                     StoredStudyGoal.self,
                     StoredStudentProgress.self,
+                    StoredStudyAvailability.self,
+                    StoredPlannedStudyBlock.self,
                 configurations: configuration
             )
         } catch {
