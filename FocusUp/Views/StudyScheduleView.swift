@@ -9,27 +9,114 @@ import SwiftUI
 
 struct StudyScheduleView: View {
     
+    @Bindable var viewModel: StudyScheduleViewModel
     @Bindable var studyAvailabilityViewModel: StudyAvailabilityViewModel
+    
+    @State private var showingStudyAvailability = false
     
     var body: some View {
         NavigationStack {
-            VStack {
-                ContentUnavailableView (
-                    "No Study Schedule",
-                    systemImage: "calendar",
-                    description: Text("Set your study availability to start building a personalised study schedule.")
-                )
+            
+            Group {
+                if viewModel.plannedStudyBlocks.isEmpty {
+            
+                    ContentUnavailableView {
+                        Label("No Study Schedule", systemImage: "calendar")
+                    } description: {
+                        Text("Generate a personalised study schedule based on your academic takss, deadlines, and weekly availability.")
+                    } actions: {
+                        Button("Generate Schedule") {
+                            showingStudyAvailability = true
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                    
+                } else {
+                    
+                    List {
+                        ForEach(viewModel.plannedStudyBlocks) { block in
+                            
+                            if let task = viewModel.task(for: block) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    
+                                    Text(task.taskTitle)
+                                        .font(.headline)
+                                    
+                                    Text(task.taskSubjectName)
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                    
+                                    HStack{
+                                        Text(
+                                            block.scheduledDate,
+                                            format: .dateTime
+                                                .weekday(.wide)
+                                                .day()
+                                                .month()
+                                        )
+                                        .font(.headline)
+                                        
+                                        Spacer()
+                                        
+                                        Text(formatStudyTime(block.plannedStudyMinutes))
+                                    }
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                                }
+                                .padding(.vertical, 4)
+                            }
+                        }
+                    }
+                }
             }
             .navigationTitle("Study Schedule")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink {
-                        StudyAvailabilityView(viewModel: studyAvailabilityViewModel)
+                    Button {
+                        showingStudyAvailability = true
                     } label: {
                         Image(systemName: "calendar.badge.clock")
                     }
                 }
             }
+            .sheet(isPresented: $showingStudyAvailability) {
+                StudyAvailabilityView(
+                    viewModel: studyAvailabilityViewModel,
+                    onConfirm: {
+                        let wasGenerated = viewModel.generateStudySchedule()
+                        
+                        if wasGenerated {
+                            showingStudyAvailability = false
+                        }
+                    }
+                )
+            }
+            .alert(
+                "Unable to Generate Study Schedule",
+                isPresented: Binding(
+                    get: {
+                        viewModel.errorMessage != nil
+                    },
+                    set: {_ in
+                        viewModel.errorMessage = nil
+                    }
+                )
+            ) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(viewModel.errorMessage ?? "")
+            }
+        }
+    }
+    
+    private func formatStudyTime(_ minutes: Int) -> String {
+        let hours = minutes / 60
+        let remainingMinutes = minutes % 60
+        
+        if hours == 0 {
+            return "\(remainingMinutes) min"
+        } else {
+            return "\(hours) hr \(remainingMinutes) min"
         }
     }
 }

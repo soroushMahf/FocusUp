@@ -11,8 +11,24 @@ struct RootView: View {
     
     @State private var studentProgressViewModel = StudentProgressViewModel()
     @State private var studyGoalViewModel = StudyGoalViewModel()
+    
     @State private var studyPlanViewModel = StudyPlanViewModel(repository: SwiftDataAcademicTaskRepository())
-    @State private var studyAvailabilityViewModel = StudyAvailabilityViewModel(repository: SwiftDataStudyAvailabilityRepository(context: PersistenceController.shared.context))
+    
+    @State private var studyAvailabilityViewModel = StudyAvailabilityViewModel(
+        repository: SwiftDataStudyAvailabilityRepository(
+            context: PersistenceController.shared.context
+        )
+    )
+    
+    @State private var studyScheduleViewModel = StudyScheduleViewModel(
+        academicTaskRepository: SwiftDataAcademicTaskRepository(),
+        studyAvailabilityRepository: SwiftDataStudyAvailabilityRepository(
+            context: PersistenceController.shared.context
+        ),
+        plannedStudyBlockRepository: SwiftDataPlannedStudyBlockRepository(
+            context: PersistenceController.shared.context
+        )
+    )
     
     var body: some View {
         TabView {
@@ -29,7 +45,10 @@ struct RootView: View {
                     Label("Study Plan", systemImage: "checklist")
                 }
             
-            StudyScheduleView(studyAvailabilityViewModel: studyAvailabilityViewModel)
+            StudyScheduleView(
+                viewModel: studyScheduleViewModel,
+                studyAvailabilityViewModel: studyAvailabilityViewModel
+            )
                 .tabItem {
                     Label("Schedule", systemImage: "calendar")
                 }

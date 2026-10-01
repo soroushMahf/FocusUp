@@ -11,48 +11,68 @@ struct StudyAvailabilityView: View {
     
     @Bindable var viewModel: StudyAvailabilityViewModel
     
+    let onConfirm: () -> Void
+    
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
-        Form {
-            Section {
-                Text("Set how much time you usually have available to study each day. FocusUp will use this when creating your study plan.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
-            
-            Section("Weekly Availability") {
-                ForEach(Weekday.allCases, id: \.self) { weekday in
-                    Picker(
-                        weekday.rawValue,
-                        selection: Binding(
-                            get: { viewModel.availability(for: weekday)},
-                            set: { newValue in viewModel.setAvailability(for: weekday, minutes: newValue) }
-                        )
-                    ) {
-                        Text("Unavailable")
-                            .tag(0)
-                        
-                        ForEach(
-                            stride(from: 30, through: 720, by: 30).map{ $0 },
-                            id: \.self
-                        ) { minutes in
-                            Text(formatStudyTime(minutes))
-                                .tag(minutes)
+        NavigationStack {
+            Form {
+                Section {
+                    Text("Confirm how much time you usually have available to study each day. FocusUp will use this when creating your study schedule.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                
+                Section("Weekly Availability") {
+                    ForEach(Weekday.allCases, id: \.self) { weekday in
+                        Picker(
+                            weekday.rawValue,
+                            selection: Binding(
+                                get: { viewModel.availability(for: weekday)},
+                                set: { newValue in viewModel.setAvailability(for: weekday, minutes: newValue) }
+                            )
+                        ) {
+                            Text("Unavailable")
+                                .tag(0)
+                            
+                            ForEach(
+                                stride(from: 30, through: 720, by: 30).map{ $0 },
+                                id: \.self
+                            ) { minutes in
+                                Text(formatStudyTime(minutes))
+                                    .tag(minutes)
+                            }
                         }
                     }
                 }
             }
-        }
-        .navigationTitle("Study Availability")
-        .alert(
-            "Unable to Update Availability",
-            isPresented: Binding(
-                get: { viewModel.errorMessage != nil },
-                set: { _ in viewModel.errorMessage = nil }
-            )
-        ) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(viewModel.errorMessage ?? "")
+            .navigationTitle("Study Availability")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar{
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Confirm") {
+                        onConfirm()
+                    }
+                }
+            }
+            .alert(
+                "Unable to Update Availability",
+                isPresented: Binding(
+                    get: { viewModel.errorMessage != nil },
+                    set: { _ in viewModel.errorMessage = nil }
+                )
+            ) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(viewModel.errorMessage ?? "")
+            }
         }
     }
     
@@ -68,15 +88,15 @@ struct StudyAvailabilityView: View {
     }
 }
 
-#Preview {
-    NavigationStack{
-        StudyAvailabilityView(
-            viewModel: StudyAvailabilityViewModel(
-                repository: PreviewStudyAvailabilityRepository()
-            )
-        )
-    }
-}
+//#Preview {
+//    NavigationStack{
+//        StudyAvailabilityView(
+//            viewModel: StudyAvailabilityViewModel(
+//                repository: PreviewStudyAvailabilityRepository()
+//            )
+//        )
+//    }
+//}
 
 //remove later, just for preview
 @MainActor
