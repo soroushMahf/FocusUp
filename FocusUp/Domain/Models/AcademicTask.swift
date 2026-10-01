@@ -51,4 +51,15 @@ enum TaskPriority: String, CaseIterable, Hashable {
             Color.red
         }
     }
+    
+    var schedulingValue: Int {
+        switch self {
+        case .low:
+            return 1
+        case.medium:
+            return 2
+        case .high:
+            return 3
+        }
+    }
 }
