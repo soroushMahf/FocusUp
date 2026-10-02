@@ -270,7 +270,8 @@ struct GenerateStudyScheduleUseCaseTests {
         let oldBlock = PlannedStudyBlock(
             academicTaskID: task.id,
             scheduledDate: currentDate,
-            plannedStudyMinutes: 60
+            plannedStudyMinutes: 60,
+            completedStudyMinutes: 30
         )
         
         blockRepository.blocks = [oldBlock]

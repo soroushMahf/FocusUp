@@ -8,13 +8,17 @@
 import Foundation
 
 @Observable
+@MainActor
 final class FocusViewModel {
     
     var selectedTask: AcademicTask?
     var selectedStudyGoal: StudyGoal?
+    var selectedStudyBlock: PlannedStudyBlock?
     
     var focusMinutes: Int = 60
     var breakMinutes: Int = 5
+    
+    var completedFocusSeconds: Int = 0
     
     var remainingSeconds: Int = 0
     var isTimerRunning: Bool = false
@@ -34,6 +38,10 @@ final class FocusViewModel {
         (focusMinutes * 60) - firstHalfFocusSeconds
     }
     
+    var completedFocusMinutes: Int {
+        completedFocusSeconds / 60
+    }
+    
     var progress = StudentProgress()
     
     private let startStudySessionUseCase = StartStudySessionUseCase()
@@ -51,6 +59,8 @@ final class FocusViewModel {
             
             remainingSeconds = firstHalfFocusSeconds
             
+            completedFocusSeconds = 0
+            
             startTimer()
             
             errorMessage = nil
@@ -65,20 +75,22 @@ final class FocusViewModel {
     
     private func startTimer() {
         timer?.invalidate()
-        
         isTimerRunning = true
         
-        timer = Timer.scheduledTimer(
-            withTimeInterval: 1.0,
-            repeats: true
-        ) { [weak self] _ in
-            
-            guard let self else { return }
-            
-            if self.remainingSeconds > 0 {
-                self.remainingSeconds -= 1
-            } else {
-                self.moveToNextPhase()
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            MainActor.assumeIsolated {
+                guard let self else { return }
+                
+                if self.remainingSeconds > 0 {
+                    self.remainingSeconds -= 1
+                    
+                    if self.sessionPhase == .firstHalfFocus || self.sessionPhase == .secondHalfFocus {
+                        self.completedFocusSeconds += 1
+                    }
+                    
+                } else {
+                    self.moveToNextPhase()
+                }
             }
         }
     }
@@ -153,15 +165,24 @@ final class FocusViewModel {
     
     func endSessionEarly() {
         stopTimer()
-        activeSession = nil
         remainingSeconds = 0
         sessionPhase = .completed
+        
+        activeSession?.studyCompletedAt = Date()
     }
     
     func resetSession() {
         activeSession = nil
         remainingSeconds = 0
+        completedFocusSeconds = 0
         sessionPhase = .firstHalfFocus
         isTimerRunning = false
+    }
+    
+    // Study Block function
+    func prepareForScheduledStudy(block: PlannedStudyBlock, task: AcademicTask) {
+        selectedStudyBlock = block
+        selectedTask = task
+        focusMinutes = block.plannedStudyMinutes - block.completedStudyMinutes
     }
 }

@@ -80,16 +80,21 @@ struct GenerateStudyScheduleUseCase {
 
                 // A day may contain multiple blocks
                 if availableMinutes > 0 {
+                    
+                    // A planned study block cannot exceed the maximum focus session duration
+                    let maximumFocusMinutes = 240
 
                     let blockMinutes = min(
                         remainingTaskMinutes,
                         availableMinutes,
+                        maximumFocusMinutes
                     )
 
                     let block = PlannedStudyBlock(
                         academicTaskID: task.id,
                         scheduledDate: schedulingDate,
-                        plannedStudyMinutes: blockMinutes
+                        plannedStudyMinutes: blockMinutes,
+                        completedStudyMinutes: 0
                     )
 
                     generatedBlocks.append(block)
@@ -100,6 +105,11 @@ struct GenerateStudyScheduleUseCase {
 
                 remainingMinutesByDate[schedulingDate] = availableMinutes
 
+                //stay on the same day if there is still availability
+                if remainingTaskMinutes > 0 && availableMinutes > 0 {
+                    continue
+                }
+                
                 guard let nextDate = calendar.date(
                     byAdding: .day,
                     value: 1,

@@ -13,6 +13,9 @@ struct ActiveStudySessionView: View {
     @Bindable var studentProgressViewModel: StudentProgressViewModel
     @Bindable var studyGoalViewModel: StudyGoalViewModel
     @Bindable var studyPlanViewModel: StudyPlanViewModel
+    
+    var studyScheduleViewModel: StudyScheduleViewModel?
+    
     @Environment(\.dismiss) private var dismiss
     
     var selectedTask: AcademicTask? {
@@ -61,15 +64,29 @@ struct ActiveStudySessionView: View {
                 
                 Button("Done"){
                     if let session = viewModel.activeSession {
-                        studentProgressViewModel.recordCompletedSession(
-                            studyMinutes: session.focusMinutes
-                        )
-                    
-                        if let goalID = session.studyGoalID {
-                            studyGoalViewModel.addStudyMinutes(
-                                session.focusMinutes,
-                                to: goalID
+                        
+                        let completedMinutes = viewModel.completedFocusMinutes
+                        
+                        if completedMinutes > 0 {
+                            studentProgressViewModel.recordCompletedSession(
+                                studyMinutes: completedMinutes
                             )
+                            
+                            if let goalID = session.studyGoalID {
+                                studyGoalViewModel.addStudyMinutes(
+                                    completedMinutes,
+                                    to: goalID
+                                )
+                            }
+                            
+                            // update the scheduled study block of this sessions
+                            // was started from study schedule
+                            if let block = viewModel.selectedStudyBlock {
+                                studyScheduleViewModel?.recordStudyProgress(
+                                    for: block,
+                                    completedMinutes: completedMinutes
+                                )
+                            }
                         }
                     }
                     viewModel.resetSession()
@@ -195,5 +212,12 @@ struct ActiveStudySessionView: View {
 }
 
 #Preview {
-    ActiveStudySessionView(viewModel: FocusViewModel(), studentProgressViewModel: StudentProgressViewModel(), studyGoalViewModel: StudyGoalViewModel(), studyPlanViewModel: StudyPlanViewModel(repository: SwiftDataAcademicTaskRepository()))
+    ActiveStudySessionView(
+        viewModel: FocusViewModel(),
+        studentProgressViewModel: StudentProgressViewModel(),
+        studyGoalViewModel: StudyGoalViewModel(),
+        studyPlanViewModel: StudyPlanViewModel(
+            repository: SwiftDataAcademicTaskRepository()),
+        studyScheduleViewModel: nil
+    )
 }

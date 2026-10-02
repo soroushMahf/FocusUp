@@ -47,7 +47,10 @@ struct RootView: View {
             
             StudyScheduleView(
                 viewModel: studyScheduleViewModel,
-                studyAvailabilityViewModel: studyAvailabilityViewModel
+                studyAvailabilityViewModel: studyAvailabilityViewModel,
+                studentProgressViewModel: studentProgressViewModel,
+                studyGoalViewModel: studyGoalViewModel,
+                studyPlanViewModel: studyPlanViewModel
             )
                 .tabItem {
                     Label("Schedule", systemImage: "calendar")

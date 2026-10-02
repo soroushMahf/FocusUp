@@ -16,6 +16,27 @@ struct FocusView: View {
     @Bindable var studyGoalViewModel: StudyGoalViewModel
     @Bindable var studyPlanViewModel: StudyPlanViewModel
     
+    var studyScheduleViewModel: StudyScheduleViewModel?
+    
+    let scheduledBlock: PlannedStudyBlock?
+    let scheduledTask: AcademicTask?
+    
+    init(
+        studentProgressViewModel: StudentProgressViewModel,
+        studyGoalViewModel: StudyGoalViewModel,
+        studyPlanViewModel: StudyPlanViewModel,
+        scheduledBlock: PlannedStudyBlock? = nil,
+        scheduledTask: AcademicTask? = nil,
+        studyScheduleViewModel: StudyScheduleViewModel? = nil
+    ) {
+        self.studentProgressViewModel = studentProgressViewModel
+        self.studyGoalViewModel = studyGoalViewModel
+        self.studyPlanViewModel = studyPlanViewModel
+        self.scheduledBlock = scheduledBlock
+        self.scheduledTask = scheduledTask
+        self.studyScheduleViewModel = studyScheduleViewModel
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -32,6 +53,7 @@ struct FocusView: View {
                                 .tag(task as AcademicTask?)
                         }
                     }
+                    .disabled(viewModel.selectedStudyBlock != nil)
                     
                     Picker("Study Goal", selection: $viewModel.selectedStudyGoal) {
                         Text("None")
@@ -100,8 +122,19 @@ struct FocusView: View {
                     viewModel: viewModel,
                     studentProgressViewModel: studentProgressViewModel,
                     studyGoalViewModel: studyGoalViewModel,
-                    studyPlanViewModel: studyPlanViewModel
+                    studyPlanViewModel: studyPlanViewModel,
+                    studyScheduleViewModel: studyScheduleViewModel
                 )
+            }
+            .onAppear{
+                if let scheduledBlock,
+                   let scheduledTask,
+                   viewModel.selectedStudyBlock?.id != scheduledBlock.id {
+                    
+                    viewModel.prepareForScheduledStudy(
+                        block: scheduledBlock,
+                        task: scheduledTask)
+                }
             }
             .alert(
                 "Unable to Start Session",

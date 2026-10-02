@@ -12,6 +12,11 @@ struct StudyScheduleView: View {
     @Bindable var viewModel: StudyScheduleViewModel
     @Bindable var studyAvailabilityViewModel: StudyAvailabilityViewModel
     
+    //Adding these viewModels so the user can navigate to FocusView
+    @Bindable var studentProgressViewModel: StudentProgressViewModel
+    @Bindable var studyGoalViewModel: StudyGoalViewModel
+    @Bindable var studyPlanViewModel: StudyPlanViewModel
+    
     @State private var showingStudyAvailability = false
     
     var body: some View {
@@ -37,6 +42,7 @@ struct StudyScheduleView: View {
                         ForEach(viewModel.plannedStudyBlocks) { block in
                             
                             if let task = viewModel.task(for: block) {
+                                
                                 VStack(alignment: .leading, spacing: 4) {
                                     
                                     Text(task.taskTitle)
@@ -58,10 +64,32 @@ struct StudyScheduleView: View {
                                         
                                         Spacer()
                                         
-                                        Text(formatStudyTime(block.plannedStudyMinutes))
+                                        Text("\(formatStudyTime(block.completedStudyMinutes)) / \(formatStudyTime(block.plannedStudyMinutes))")
                                     }
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
+
+                                    if block.isCompleted {
+                                        Label("Completed", systemImage: "checkmark.circle.fill")
+                                    } else {
+                                        NavigationLink {
+                                            FocusView(
+                                                studentProgressViewModel: studentProgressViewModel,
+                                                studyGoalViewModel: studyGoalViewModel,
+                                                studyPlanViewModel: studyPlanViewModel,
+                                                scheduledBlock: block,
+                                                scheduledTask: task,
+                                                studyScheduleViewModel: viewModel
+                                            )
+                                        } label: {
+                                            Label(
+                                                block.completedStudyMinutes > 0
+                                                    ? "Continue Studying"
+                                                    : "Start Studying",
+                                                systemImage: "play.fill"
+                                            )
+                                        }
+                                    }
                                 }
                                 .padding(.vertical, 4)
                             }
@@ -70,6 +98,9 @@ struct StudyScheduleView: View {
                 }
             }
             .navigationTitle("Study Schedule")
+            .onAppear {
+                viewModel.loadStudySchedule()
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {

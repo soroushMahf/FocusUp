@@ -71,4 +71,21 @@ final class StudyScheduleViewModel {
             $0.id == block.academicTaskID
         }
     }
+    
+    func recordStudyProgress(for block: PlannedStudyBlock, completedMinutes: Int) {
+        var updatedBlock = block
+        
+        updatedBlock.completedStudyMinutes = min(
+            block.completedStudyMinutes + completedMinutes,
+            block.plannedStudyMinutes
+        )
+        
+        do {
+            try plannedStudyBlockRepository.updatePlannedStudyBlock(updatedBlock)
+            loadStudySchedule()
+            errorMessage = nil
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
 }

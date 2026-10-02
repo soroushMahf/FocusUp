@@ -23,7 +23,7 @@ final class SwiftDataPlannedStudyBlockRepository: PlannedStudyBlockRepository {
             academicTaskID: block.academicTaskID,
             scheduledDate: block.scheduledDate,
             plannedStudyMinutes: block.plannedStudyMinutes,
-            isCompleted: block.isCompleted
+            completedStudyMinutes: block.completedStudyMinutes
         )
 
         context.insert(storedBlock)
@@ -46,7 +46,7 @@ final class SwiftDataPlannedStudyBlockRepository: PlannedStudyBlockRepository {
                 academicTaskID: stored.academicTaskID,
                 scheduledDate: stored.scheduledDate,
                 plannedStudyMinutes: stored.plannedStudyMinutes,
-                isCompleted: stored.isCompleted
+                completedStudyMinutes: stored.completedStudyMinutes
             )
         }
     }
@@ -67,7 +67,7 @@ final class SwiftDataPlannedStudyBlockRepository: PlannedStudyBlockRepository {
         storedBlock.academicTaskID = block.academicTaskID
         storedBlock.scheduledDate = block.scheduledDate
         storedBlock.plannedStudyMinutes = block.plannedStudyMinutes
-        storedBlock.isCompleted = block.isCompleted
+        storedBlock.completedStudyMinutes = block.completedStudyMinutes
 
         try context.save()
     }
@@ -97,6 +97,4 @@ final class SwiftDataPlannedStudyBlockRepository: PlannedStudyBlockRepository {
             try deletePlannedStudyBlock(block)
         }
     }
-    
-    
 }
