@@ -68,15 +68,23 @@ struct ActiveStudySessionView: View {
                         let completedMinutes = viewModel.completedFocusMinutes
                         
                         if completedMinutes > 0 {
+                            
+                            // update overall student progress
                             studentProgressViewModel.recordCompletedSession(
                                 studyMinutes: completedMinutes
                             )
                             
+                            // update the selected study goal
                             if let goalID = session.studyGoalID {
                                 studyGoalViewModel.addStudyMinutes(
                                     completedMinutes,
                                     to: goalID
                                 )
+                            }
+                            
+                            // update study progress for the academic task
+                            if let taskID = session.academicTaskID {
+                                studyPlanViewModel.addStudyMinutes(completedMinutes, to: taskID)
                             }
                             
                             // update the scheduled study block of this sessions

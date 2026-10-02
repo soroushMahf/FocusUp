@@ -19,6 +19,7 @@ final class StoredAcademicTask {
     var taskDeadline: Date
     var taskPriority: String // taskPriority is a string now to save raw value
     var estimatedStudyMinutes: Int
+    var completedStudyMinutes: Int
     var isTaskCompleted: Bool
     
     init(
@@ -28,6 +29,7 @@ final class StoredAcademicTask {
         taskDeadline: Date,
         taskPriority: String,
         estimatedStudyMinutes: Int,
+        completedStudyMinutes: Int,
         isTaskCompleted: Bool
     ) {
         self.id = id
@@ -36,6 +38,7 @@ final class StoredAcademicTask {
         self.taskDeadline = taskDeadline
         self.taskPriority = taskPriority
         self.estimatedStudyMinutes = estimatedStudyMinutes
+        self.completedStudyMinutes = completedStudyMinutes
         self.isTaskCompleted = isTaskCompleted
     }
 }

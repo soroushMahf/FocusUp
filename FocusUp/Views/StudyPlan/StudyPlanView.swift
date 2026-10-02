@@ -35,7 +35,7 @@ struct StudyPlanView: View {
                                     
                                     Spacer()
                                     
-                                    Text("\(viewModel.estimatedStudyTimeText)")
+                                    Text("\(formatEstimatedStudyTime(task.estimatedStudyMinutes))")
                                         .font(.subheadline)
                                 }
                                 
@@ -129,6 +129,17 @@ struct StudyPlanView: View {
                     viewModel: viewModel
                 )
             }
+        }
+    }
+    
+    private func formatEstimatedStudyTime(_ minutes: Int) -> String {
+        let hours = minutes / 60
+        let remainingMinutes = minutes % 60
+        
+        if hours == 0 {
+            return "\(remainingMinutes) min"
+        } else {
+            return "\(hours) hr \(remainingMinutes) min"
         }
     }
 }

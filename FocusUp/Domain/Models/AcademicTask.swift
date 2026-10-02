@@ -15,6 +15,7 @@ struct AcademicTask: Identifiable, Hashable {
     let taskDeadline: Date
     let taskPriority: TaskPriority
     let estimatedStudyMinutes: Int
+    var completedStudyMinutes: Int
     var isTaskCompleted: Bool
     
     init(
@@ -24,6 +25,7 @@ struct AcademicTask: Identifiable, Hashable {
         taskDeadline: Date,
         taskPriority: TaskPriority,
         estimatedStudyMinutes: Int,
+        completedStudyMinutes: Int = 0,
         isTaskCompleted: Bool = false
     ) {
         self.id = id
@@ -32,6 +34,7 @@ struct AcademicTask: Identifiable, Hashable {
         self.taskDeadline = taskDeadline
         self.taskPriority = taskPriority
         self.estimatedStudyMinutes = estimatedStudyMinutes
+        self.completedStudyMinutes = completedStudyMinutes
         self.isTaskCompleted = isTaskCompleted
     }
 }

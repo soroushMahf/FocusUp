@@ -28,6 +28,9 @@ struct GenerateStudyScheduleUseCase {
         
         let calendar = Calendar.current
         
+        let minimumStudyBlockMinutes = 30 // a minimum of 30 mins is required for a block
+        let maximumFocusMinutes = 240 // A planned study block cannot exceed the maximum focus session duration
+        
         //fetching incomplete academic tasks
         let tasks = try academicTaskRepository.fetchTasks()
             .filter { !$0.isTaskCompleted }
@@ -62,7 +65,8 @@ struct GenerateStudyScheduleUseCase {
         var generatedBlocks: [PlannedStudyBlock] = []
 
         for task in sortedTasks {
-            var remainingTaskMinutes = task.estimatedStudyMinutes
+            
+            var remainingTaskMinutes = max(task.estimatedStudyMinutes - task.completedStudyMinutes, 0)
             var schedulingDate = calendar.startOfDay(for: currentDate)
             let deadlineDate = calendar.startOfDay(for: task.taskDeadline)
 
@@ -77,13 +81,11 @@ struct GenerateStudyScheduleUseCase {
                 }?.availableStudyMinutes ?? 0
 
                 var availableMinutes = remainingMinutesByDate[schedulingDate] ?? dailyAvailability
-
+                
                 // A day may contain multiple blocks
-                if availableMinutes > 0 {
+                if availableMinutes > 0 &&
+                    (availableMinutes >= minimumStudyBlockMinutes || remainingTaskMinutes < minimumStudyBlockMinutes) {
                     
-                    // A planned study block cannot exceed the maximum focus session duration
-                    let maximumFocusMinutes = 240
-
                     let blockMinutes = min(
                         remainingTaskMinutes,
                         availableMinutes,
@@ -104,9 +106,14 @@ struct GenerateStudyScheduleUseCase {
                 }
 
                 remainingMinutesByDate[schedulingDate] = availableMinutes
+                
+                let canCreateAnotherBlock =
+                    availableMinutes > 0 &&
+                    (availableMinutes >= minimumStudyBlockMinutes ||
+                    remainingTaskMinutes < minimumStudyBlockMinutes)
 
                 //stay on the same day if there is still availability
-                if remainingTaskMinutes > 0 && availableMinutes > 0 {
+                if remainingTaskMinutes > 0 && canCreateAnotherBlock {
                     continue
                 }
                 

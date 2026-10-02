@@ -84,6 +84,25 @@ final class StudyPlanViewModel {
         }
     }
     
+    func addStudyMinutes(_ minutes: Int, to taskID: UUID) {
+        guard var task = tasks.first(where: { $0.id == taskID }) else {
+            return
+        }
+        
+        task.completedStudyMinutes = min(
+            task.completedStudyMinutes + minutes,
+            task.estimatedStudyMinutes
+        )
+        
+        do {
+            try repository.updateTask(task)
+            loadTasks()
+            errorMessage = nil
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+    
     func deleteTask(_ task: AcademicTask) {
         do {
             try repository.deleteTask(task)
