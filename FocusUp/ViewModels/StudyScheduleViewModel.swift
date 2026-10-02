@@ -19,6 +19,9 @@ final class StudyScheduleViewModel {
     private let plannedStudyBlockRepository: PlannedStudyBlockRepository
     private let generateStudyScheduleUseCase: GenerateStudyScheduleUseCase
     
+    // for widget extension
+    private let widgetStore = StudyScheduleWidgetStore()
+    
     init(
         academicTaskRepository: AcademicTaskRepository,
         studyAvailabilityRepository: StudyAvailabilityRepository,
@@ -40,8 +43,9 @@ final class StudyScheduleViewModel {
     func loadStudySchedule() {
         do {
             plannedStudyBlocks = try plannedStudyBlockRepository.fetchPlannedStudyBlocks()
-            
             academicTasks = try academicTaskRepository.fetchTasks()
+            
+            updateWidgetData()
             
             errorMessage = nil
             
@@ -56,6 +60,8 @@ final class StudyScheduleViewModel {
             plannedStudyBlocks = try generateStudyScheduleUseCase.execute()
             
             academicTasks = try academicTaskRepository.fetchTasks()
+            
+            loadStudySchedule()
             
             errorMessage = nil
             return true
@@ -87,5 +93,38 @@ final class StudyScheduleViewModel {
         } catch {
             errorMessage = error.localizedDescription
         }
+    }
+    
+    // function for widget
+    private func updateWidgetData() {
+        let currentDate = Date()
+        
+        let nextBlock = plannedStudyBlocks
+            .filter { !$0.isCompleted }
+            .filter {
+                Calendar.current.startOfDay(for: $0.scheduledDate) >=
+                Calendar.current.startOfDay(for: currentDate)
+            }
+            .sorted {
+                $0.scheduledDate < $1.scheduledDate
+            }
+            .first
+        
+        guard let nextBlock,
+              let task = academicTasks.first(where: {
+                  $0.id == nextBlock.academicTaskID
+              }) else {
+            widgetStore.clear()
+            return
+        }
+        
+        let widgetData = StudyScheduleWidgetData(
+            taskTitle: task.taskTitle,
+            subjectName: task.taskSubjectName,
+            scheduledDate: nextBlock.scheduledDate,
+            remainingStudyMinutes: nextBlock.plannedStudyMinutes - nextBlock.completedStudyMinutes
+        )
+        
+        widgetStore.save(widgetData)
     }
 }
