@@ -10,6 +10,9 @@
 		FAAF88C6306FE08F00C18518 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAAF88C5306FE08F00C18518 /* WidgetKit.framework */; };
 		FAAF88C8306FE08F00C18518 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAAF88C7306FE08F00C18518 /* SwiftUI.framework */; };
 		FAAF88D5306FE09100C18518 /* FocusUpWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FAAF88C3306FE08F00C18518 /* FocusUpWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FAAF89F53070DAA400C18518 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAAF89F43070DAA400C18518 /* UserNotifications.framework */; };
+		FAAF89F73070DAA400C18518 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAAF89F63070DAA400C18518 /* UserNotificationsUI.framework */; };
+		FAAF8A013070DAA400C18518 /* FocusUpNotification.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FAAF89F33070DAA400C18518 /* FocusUpNotification.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +30,13 @@
 			remoteGlobalIDString = FAAF88C2306FE08F00C18518;
 			remoteInfo = FocusUpWidgetExtension;
 		};
+		FAAF89FF3070DAA400C18518 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA502427304E649300B5606D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FAAF89F23070DAA400C18518;
+			remoteInfo = FocusUpNotification;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,6 +47,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				FAAF88D5306FE09100C18518 /* FocusUpWidgetExtension.appex in Embed Foundation Extensions */,
+				FAAF8A013070DAA400C18518 /* FocusUpNotification.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -50,6 +61,9 @@
 		FAAF88C5306FE08F00C18518 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		FAAF88C7306FE08F00C18518 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		FAAF88DC306FE1EE00C18518 /* FocusUpWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FocusUpWidgetExtension.entitlements; sourceTree = "<group>"; };
+		FAAF89F33070DAA400C18518 /* FocusUpNotification.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FocusUpNotification.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAAF89F43070DAA400C18518 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		FAAF89F63070DAA400C18518 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -67,6 +81,13 @@
 				Shared/StudyScheduleWidgetStore.swift,
 			);
 			target = FAAF88C2306FE08F00C18518 /* FocusUpWidgetExtension */;
+		};
+		FAAF8A043070DAA400C18518 /* Exceptions for "FocusUpNotification" folder in "FocusUpNotification" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FAAF89F23070DAA400C18518 /* FocusUpNotification */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -90,6 +111,14 @@
 				FAAF88D9306FE09100C18518 /* Exceptions for "FocusUpWidget" folder in "FocusUpWidgetExtension" target */,
 			);
 			path = FocusUpWidget;
+			sourceTree = "<group>";
+		};
+		FAAF89F83070DAA400C18518 /* FocusUpNotification */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FAAF8A043070DAA400C18518 /* Exceptions for "FocusUpNotification" folder in "FocusUpNotification" target */,
+			);
+			path = FocusUpNotification;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -118,6 +147,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FAAF89F03070DAA400C18518 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAAF89F73070DAA400C18518 /* UserNotificationsUI.framework in Frameworks */,
+				FAAF89F53070DAA400C18518 /* UserNotifications.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -128,6 +166,7 @@
 				FA502431304E649300B5606D /* FocusUp */,
 				FA6EA738305646C700B7D51E /* FocusUpTests */,
 				FAAF88C9306FE08F00C18518 /* FocusUpWidget */,
+				FAAF89F83070DAA400C18518 /* FocusUpNotification */,
 				FAAF88C4306FE08F00C18518 /* Frameworks */,
 				FA502430304E649300B5606D /* Products */,
 			);
@@ -139,6 +178,7 @@
 				FA50242F304E649300B5606D /* FocusUp.app */,
 				FA6EA737305646C700B7D51E /* FocusUpTests.xctest */,
 				FAAF88C3306FE08F00C18518 /* FocusUpWidgetExtension.appex */,
+				FAAF89F33070DAA400C18518 /* FocusUpNotification.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -148,6 +188,8 @@
 			children = (
 				FAAF88C5306FE08F00C18518 /* WidgetKit.framework */,
 				FAAF88C7306FE08F00C18518 /* SwiftUI.framework */,
+				FAAF89F43070DAA400C18518 /* UserNotifications.framework */,
+				FAAF89F63070DAA400C18518 /* UserNotificationsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -168,6 +210,7 @@
 			);
 			dependencies = (
 				FAAF88D4306FE09100C18518 /* PBXTargetDependency */,
+				FAAF8A003070DAA400C18518 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				FA502431304E649300B5606D /* FocusUp */,
@@ -224,6 +267,28 @@
 			productReference = FAAF88C3306FE08F00C18518 /* FocusUpWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		FAAF89F23070DAA400C18518 /* FocusUpNotification */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FAAF8A053070DAA400C18518 /* Build configuration list for PBXNativeTarget "FocusUpNotification" */;
+			buildPhases = (
+				FAAF89EF3070DAA400C18518 /* Sources */,
+				FAAF89F03070DAA400C18518 /* Frameworks */,
+				FAAF89F13070DAA400C18518 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				FAAF89F83070DAA400C18518 /* FocusUpNotification */,
+			);
+			name = FocusUpNotification;
+			packageProductDependencies = (
+			);
+			productName = FocusUpNotification;
+			productReference = FAAF89F33070DAA400C18518 /* FocusUpNotification.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -242,6 +307,9 @@
 						TestTargetID = FA50242E304E649300B5606D;
 					};
 					FAAF88C2306FE08F00C18518 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					FAAF89F23070DAA400C18518 = {
 						CreatedOnToolsVersion = 27.0;
 					};
 				};
@@ -263,6 +331,7 @@
 				FA50242E304E649300B5606D /* FocusUp */,
 				FA6EA736305646C700B7D51E /* FocusUpTests */,
 				FAAF88C2306FE08F00C18518 /* FocusUpWidgetExtension */,
+				FAAF89F23070DAA400C18518 /* FocusUpNotification */,
 			);
 		};
 /* End PBXProject section */
@@ -283,6 +352,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		FAAF88C1306FE08F00C18518 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAAF89F13070DAA400C18518 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -313,6 +389,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FAAF89EF3070DAA400C18518 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -325,6 +408,11 @@
 			isa = PBXTargetDependency;
 			target = FAAF88C2306FE08F00C18518 /* FocusUpWidgetExtension */;
 			targetProxy = FAAF88D3306FE09100C18518 /* PBXContainerItemProxy */;
+		};
+		FAAF8A003070DAA400C18518 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FAAF89F23070DAA400C18518 /* FocusUpNotification */;
+			targetProxy = FAAF89FF3070DAA400C18518 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -628,6 +716,64 @@
 			};
 			name = Release;
 		};
+		FAAF8A023070DAA400C18518 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 796TJLYZD2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FocusUpNotification/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FocusUpNotification;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.SoroushMah.FocusUp.FocusUpNotification;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FAAF8A033070DAA400C18518 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 796TJLYZD2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FocusUpNotification/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FocusUpNotification;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.SoroushMah.FocusUp.FocusUpNotification;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -663,6 +809,15 @@
 			buildConfigurations = (
 				FAAF88D7306FE09100C18518 /* Debug */,
 				FAAF88D8306FE09100C18518 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FAAF8A053070DAA400C18518 /* Build configuration list for PBXNativeTarget "FocusUpNotification" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAAF8A023070DAA400C18518 /* Debug */,
+				FAAF8A033070DAA400C18518 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

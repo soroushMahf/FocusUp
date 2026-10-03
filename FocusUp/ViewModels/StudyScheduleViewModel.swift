@@ -19,6 +19,9 @@ final class StudyScheduleViewModel {
     private let plannedStudyBlockRepository: PlannedStudyBlockRepository
     private let generateStudyScheduleUseCase: GenerateStudyScheduleUseCase
     
+    // constant for notifications
+    private let notificationService = StudyNotificationService()
+    
     // for widget extension
     private let widgetStore = StudyScheduleWidgetStore()
     
@@ -62,6 +65,8 @@ final class StudyScheduleViewModel {
             academicTasks = try academicTaskRepository.fetchTasks()
             
             loadStudySchedule()
+            
+            scheduleStudyReminders()
             
             errorMessage = nil
             return true
@@ -126,5 +131,32 @@ final class StudyScheduleViewModel {
         )
         
         widgetStore.save(widgetData)
+    }
+    
+    // helper method for notifications
+    private func scheduleStudyReminders() {
+        notificationService.removeAllStudyReminders() // removing reminders from a previous generated schedule
+        
+        // looping through new loaded blocks
+        Task {
+            for block in plannedStudyBlocks {
+                guard !block.isCompleted,
+                      // finding academic task associated with each block
+                      let task = academicTasks.first(where: { $0.id == block.academicTaskID }) else {
+                    continue
+                }
+                
+                // scheduling the reminder for that task
+                do {
+                    try await notificationService.scheduleStudyReminder(
+                        taskTitle: task.taskTitle,
+                        subjectName: task.taskSubjectName,
+                        studyMinutes: block.plannedStudyMinutes,
+                        scheduledDate: block.scheduledDate)
+                } catch {
+                    print("Failed to schedule study reminder: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 }

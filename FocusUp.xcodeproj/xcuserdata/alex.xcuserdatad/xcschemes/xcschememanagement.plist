@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>FocusUpNotification.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>FocusUpWidgetExtension.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -23,6 +28,11 @@
 			<true/>
 		</dict>
 		<key>FAAF88C2306FE08F00C18518</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FAAF89F23070DAA400C18518</key>
 		<dict>
 			<key>primary</key>
 			<true/>
