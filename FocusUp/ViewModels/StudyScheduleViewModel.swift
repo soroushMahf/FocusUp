@@ -15,6 +15,16 @@ final class StudyScheduleViewModel {
     var academicTasks: [AcademicTask] = []
     var errorMessage: String?
     
+    // variable that filters out study blocks whose academic tasks no longer exist
+    // i.e. when the user deletes a task that's been planned
+    var validPlannedStudyBlocks: [PlannedStudyBlock] {
+        plannedStudyBlocks.filter { block in
+            academicTasks.contains {
+                $0.id == block.academicTaskID
+            }
+        }
+    }
+    
     private let academicTaskRepository: AcademicTaskRepository
     private let plannedStudyBlockRepository: PlannedStudyBlockRepository
     private let generateStudyScheduleUseCase: GenerateStudyScheduleUseCase

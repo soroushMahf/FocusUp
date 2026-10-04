@@ -23,7 +23,7 @@ struct StudyScheduleView: View {
         NavigationStack {
             
             Group {
-                if viewModel.plannedStudyBlocks.isEmpty {
+                if viewModel.validPlannedStudyBlocks.isEmpty {
             
                     ContentUnavailableView {
                         Label("No Study Schedule", systemImage: "calendar")
@@ -39,7 +39,7 @@ struct StudyScheduleView: View {
                 } else {
                     
                     List {
-                        ForEach(viewModel.plannedStudyBlocks) { block in
+                        ForEach(viewModel.validPlannedStudyBlocks) { block in
                             
                             if let task = viewModel.task(for: block) {
                                 
