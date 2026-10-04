@@ -28,7 +28,7 @@ struct StudyScheduleView: View {
                     ContentUnavailableView {
                         Label("No Study Schedule", systemImage: "calendar")
                     } description: {
-                        Text("Generate a personalised study schedule based on your academic takss, deadlines, and weekly availability.")
+                        Text("Generate a personalised study schedule based on your academic tasks, deadlines, and weekly availability.")
                     } actions: {
                         Button("Generate Schedule") {
                             showingStudyAvailability = true
