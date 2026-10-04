@@ -42,22 +42,79 @@ struct ActiveStudySessionView: View {
                 .fontWeight(.semibold)
             
             if(viewModel.sessionPhase == .firstHalfFocus) {
-                Text("~ First Half of Study Session ~")
+                Text("First Half of Study Session")
                     .font(.title3)
+                    .foregroundStyle(.secondary)
             }
             
             if(viewModel.sessionPhase == .secondHalfFocus) {
                 Text("~ Second Half of Study Session ~")
                     .font(.title3)
+                    .foregroundStyle(.secondary)
             }
             
             if viewModel.sessionPhase == .completed {
-                VStack(spacing: 20) {
-                    Text("Great Work! Your focusUp session is complete")
-                        .foregroundStyle(.secondary)
+                VStack(spacing: 16) {
                     
                     Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size:40))
+                        .font(.system(size: 64))
+                        .foregroundStyle(.green)
+                    
+                    Text("Great Work!")
+                        .font(.title)
+                        .fontWeight(.bold)
+                    
+                    Text("You've completed your FocusUp Session")
+                        .foregroundStyle(.secondary)
+                    
+                    Spacer()
+                        
+                    VStack(spacing: 4) {
+                        Text("\(viewModel.completedFocusMinutes)")
+                            .font(.system(size: 40, weight: .bold, design: .rounded))
+                        
+                        Text("minutes focused")
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.vertical, 8)
+                    
+                    VStack(spacing: 16) {
+                        
+                        if let task = selectedTask {
+                            HStack{
+                                Label("Task", systemImage: "checklist")
+                                
+                                Spacer()
+                                
+                                Text(task.taskTitle)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        
+                        if let goal = selectedStudyGoal {
+                            VStack(spacing: 4) {
+                                HStack {
+                                    Label("Goal", systemImage: "target")
+                                    
+                                    Spacer()
+                                    
+                                    Text(goal.goalTitle)
+                                        .foregroundStyle(.secondary)
+                                }
+                                
+                                HStack {
+                                    Spacer()
+                                    
+                                    Text("+\(viewModel.completedFocusMinutes) min contributed")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                        }
+                    }
+                    .padding()
+                    .background(.thinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
                 
                 Spacer()
@@ -107,44 +164,57 @@ struct ActiveStudySessionView: View {
             } else {
                 Text(viewModel.formattedRemainingTime)
                     .font(.system(size: 64, weight: .bold, design: .rounded))
+                    .monospacedDigit()
+                    .padding(.vertical, 30)
                     .frame(maxWidth: .infinity)
+                    .background(.thinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
             }
             
-            if let session = viewModel.activeSession {
+            if let session = viewModel.activeSession, viewModel.sessionPhase != .completed {
                 if viewModel.sessionPhase == .breakTime {
-                    Text("Stretch - Hydrate - Rest")
+                    Label(
+                        "Stretch - Hydrate - Rest",
+                        systemImage: "cup.and.head.waves"
+                    )
+                    .foregroundStyle(.secondary)
                 } else {
-                    HStack {
+                    VStack(spacing: 16) {
                         if let task = selectedTask {
-                            Text("Focus Task")
-                            Spacer()
-                            Text(task.taskTitle)
-                                .foregroundStyle(.secondary)
+                            HStack {
+                                Label("Focus Task", systemImage: "checklist")
+                                Spacer()
+                                Text(task.taskTitle)
+                                    .foregroundStyle(.secondary)
+                            }
                         }
-                    }
-                    
-                    HStack {
+                        
                         if let goal = selectedStudyGoal {
-                            Text("Focus Goal")
+                            HStack {
+                                Label("Focus Goal", systemImage: "target")
+                                Spacer()
+                                Text(goal.goalTitle)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        
+                        HStack {
+                            Label("Focus Duration", systemImage: "timer")
                             Spacer()
-                            Text(goal.goalTitle)
+                            Text("\(session.focusMinutes) min")
+                                .foregroundStyle(.secondary)
+                        }
+                        
+                        HStack {
+                            Label("Break Duration", systemImage: "cup.and.heat.waves")
+                            Spacer()
+                            Text("\(session.breakMinutes) min")
                                 .foregroundStyle(.secondary)
                         }
                     }
-                    
-                    HStack {
-                        Text("Total Focus Duration")
-                        Spacer()
-                        Text("\(session.focusMinutes) min")
-                            .foregroundStyle(.secondary)
-                    }
-                    
-                    HStack {
-                        Text("Break Duration")
-                        Spacer()
-                        Text("\(session.breakMinutes) min")
-                            .foregroundStyle(.secondary)
-                    }
+                    .padding()
+                    .background(.thinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
             }
             
@@ -203,6 +273,7 @@ struct ActiveStudySessionView: View {
         .navigationTitle("FocusUp Session")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
+        .toolbar(.hidden, for: .tabBar)
     }
     
     var phaseTitle: String {

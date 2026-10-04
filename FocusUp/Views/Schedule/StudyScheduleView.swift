@@ -68,9 +68,19 @@ struct StudyScheduleView: View {
                                     }
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
+                                    
+                                    //using 'SwiftUI' as XCode was mistaking it for the ProgressView.swift file
+                                    SwiftUI.ProgressView(
+                                        value: Double(block.completedStudyMinutes),
+                                        total: Double(block.plannedStudyMinutes)
+                                    )
+                                    .padding(.vertical, 4)
 
                                     if block.isCompleted {
                                         Label("Completed", systemImage: "checkmark.circle.fill")
+                                            .font(.subheadline)
+                                            .fontWeight(.medium)
+                                            .foregroundStyle(.secondary)
                                     } else {
                                         NavigationLink {
                                             FocusView(
@@ -82,16 +92,29 @@ struct StudyScheduleView: View {
                                                 studyScheduleViewModel: viewModel
                                             )
                                         } label: {
-                                            Label(
-                                                block.completedStudyMinutes > 0
-                                                    ? "Continue Studying"
-                                                    : "Start Studying",
-                                                systemImage: "play.fill"
-                                            )
+                                            HStack {
+                                                Spacer()
+                                                
+                                                Label(
+                                                    block.completedStudyMinutes > 0
+                                                        ? "Continue Studying"
+                                                        : "Start Studying",
+                                                    systemImage: "play.fill"
+                                                )
+                                                .fontWeight(.medium)
+                                                
+                                                Spacer()
+                                            }
+                                            .padding(.vertical, 10)
+                                            .background(.tint)
+                                            .foregroundStyle(.white)
+                                            .clipShape(RoundedRectangle(cornerRadius: 8))
                                         }
+                                        .padding(.top, 6)
                                     }
                                 }
                                 .padding(.vertical, 4)
+                                .alignmentGuide(.listRowSeparatorLeading) { _ in 0 } //resolves list separator visual issue
                             }
                         }
                     }
