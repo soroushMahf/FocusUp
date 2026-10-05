@@ -12,16 +12,18 @@ import Foundation
 @MainActor
 struct CreateStudyGoalUseCaseTests {
 
-    let persistenceController: PersistenceController
+    let repository: MockStudyGoalRepository
     let useCase: CreateStudyGoalUseCase
     
     let currentDate = Date()
     let futureDeadline = Date().addingTimeInterval(60 * 60 * 24 * 7) // making the deadline one week later
     
     init() {
-        persistenceController = PersistenceController(inMemory: true)
-        useCase = CreateStudyGoalUseCase(
-            persistenceController: persistenceController
+        let repository = MockStudyGoalRepository()
+        
+        self.repository = repository
+        self.useCase = CreateStudyGoalUseCase(
+            repository: repository
         )
     }
     
@@ -38,6 +40,8 @@ struct CreateStudyGoalUseCaseTests {
         #expect(goal.goalTargetMinutes == 600)
         #expect(goal.goalDeadline == futureDeadline)
         #expect(goal.goalCompletedMinutes == 0)
+        #expect(repository.goals.count == 1)
+        #expect(repository.goals.first?.id == goal.id)
     }
 
     @Test("Study goal fails when the goal title is empty")

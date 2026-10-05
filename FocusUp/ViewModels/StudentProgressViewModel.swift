@@ -8,20 +8,29 @@
 import Foundation
 
 @Observable
+@MainActor
 final class StudentProgressViewModel {
     
     var progress = StudentProgress()
     var errorMessage: String?
     
-    private let persistenceController = PersistenceController.shared
+    private let repository: StudentProgressRepository
     
-    init() {
+    init(repository: StudentProgressRepository) {
+        self.repository = repository
+        
         loadProgress()
+    }
+    
+    convenience init() {
+        self.init(
+            repository: AppDependencies.studentProgressRepository
+        )
     }
     
     func loadProgress() {
         do {
-            progress = try persistenceController.fetchStudentProgress()
+            progress = try repository.fetchStudentProgress()
             errorMessage = nil
         } catch {
             errorMessage = error.localizedDescription
@@ -33,7 +42,7 @@ final class StudentProgressViewModel {
         progress.completedSessions += 1
         
         do {
-            try persistenceController.updateStudentProgress(progress)
+            try repository.updateStudentProgress(progress)
             errorMessage = nil
         } catch {
             errorMessage = error.localizedDescription

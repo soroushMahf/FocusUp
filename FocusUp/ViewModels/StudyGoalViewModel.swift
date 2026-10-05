@@ -8,6 +8,7 @@
 import Foundation
 
 @Observable
+@MainActor
 final class StudyGoalViewModel {
     
     var goals: [StudyGoal] = []
@@ -24,16 +25,27 @@ final class StudyGoalViewModel {
             .min { $0.goalDeadline < $1.goalDeadline }
     }
     
-    private let persistenceController = PersistenceController.shared
-    private let createStudyGoalUseCase = CreateStudyGoalUseCase()
+    private let repository: StudyGoalRepository
+    private let createStudyGoalUseCase: CreateStudyGoalUseCase
     
-    init() {
+    init(repository: StudyGoalRepository) {
+        self.repository = repository
+        self.createStudyGoalUseCase = CreateStudyGoalUseCase(
+            repository: repository
+        )
+        
         loadGoals()
+    }
+    
+    convenience init() {
+        self.init(
+            repository: AppDependencies.studyGoalRepository
+        )
     }
     
     func loadGoals() {
         do {
-            goals = try persistenceController.fetchGoals()
+            goals = try repository.fetchGoals()
             errorMessage = nil
         } catch {
             errorMessage = error.localizedDescription
@@ -64,7 +76,7 @@ final class StudyGoalViewModel {
     
     func deleteGoal(_ goal: StudyGoal) {
         do {
-            try persistenceController.deleteGoal(goal)
+            try repository.deleteGoal(goal)
 
             loadGoals()
 
@@ -84,7 +96,7 @@ final class StudyGoalViewModel {
         updatedGoal.goalCompletedMinutes += minutes
 
         do {
-            try persistenceController.updateGoal(updatedGoal)
+            try repository.updateGoal(updatedGoal)
 
             loadGoals()
 

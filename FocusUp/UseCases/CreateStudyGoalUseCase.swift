@@ -10,16 +10,13 @@
 
 import Foundation
 
+@MainActor
 struct CreateStudyGoalUseCase {
     
-    private let persistenceController: PersistenceController
+    private let repository: StudyGoalRepository
     
-    init(persistenceController: PersistenceController) {
-        self.persistenceController = persistenceController
-    }
-    
-    init() {
-        self.persistenceController = .shared
+    init(repository: StudyGoalRepository) {
+        self.repository = repository
     }
     
     func execute(
@@ -49,7 +46,7 @@ struct CreateStudyGoalUseCase {
             goalDeadline: goalDeadline
         )
         
-        try persistenceController.saveGoal(newGoal)
+        try repository.saveGoal(newGoal)
         
         return newGoal
     }
