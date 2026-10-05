@@ -28,6 +28,10 @@ final class SwiftDataAcademicTaskRepository: AcademicTaskRepository {
         try persistenceController.fetchTasks()
     }
     
+    func fetchIncompleteTasks() throws -> [AcademicTask] {
+        try persistenceController.fetchIncompleteTasks()
+    }
+    
     func updateTask(_ task: AcademicTask) throws {
         try persistenceController.updateTask(task)
     }

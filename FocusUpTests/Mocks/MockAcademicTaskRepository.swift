@@ -11,6 +11,7 @@ import Foundation
 final class MockAcademicTaskRepository: AcademicTaskRepository {
     
     var tasks: [AcademicTask] = []
+    private(set) var incompleteTaskQueryCount = 0
     
     func saveTask(_ task: AcademicTask) throws {
         tasks.append(task)
@@ -18,6 +19,12 @@ final class MockAcademicTaskRepository: AcademicTaskRepository {
     
     func fetchTasks() throws -> [AcademicTask] {
         tasks
+    }
+
+    func fetchIncompleteTasks() throws -> [AcademicTask] {
+        incompleteTaskQueryCount += 1
+
+        return tasks.filter { !$0.isTaskCompleted }
     }
     
     func updateTask(_ task: AcademicTask) throws {

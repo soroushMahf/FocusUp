@@ -93,6 +93,38 @@ final class PersistenceController {
         }
     }
     
+    func fetchIncompleteTasks() throws -> [AcademicTask] {
+        let descriptor = FetchDescriptor<StoredAcademicTask>(
+            predicate: #Predicate<StoredAcademicTask> { task in
+                task.isTaskCompleted == false
+            },
+            sortBy: [
+                SortDescriptor(\.taskDeadline)
+            ]
+        )
+
+        let storedTasks = try context.fetch(descriptor)
+
+        return storedTasks.compactMap { storedTask in
+            guard let priority = TaskPriority(
+                rawValue: storedTask.taskPriority
+            ) else {
+                return nil
+            }
+
+            return AcademicTask(
+                id: storedTask.id,
+                taskTitle: storedTask.taskTitle,
+                taskSubjectName: storedTask.taskSubjectName,
+                taskDeadline: storedTask.taskDeadline,
+                taskPriority: priority,
+                estimatedStudyMinutes: storedTask.estimatedStudyMinutes,
+                completedStudyMinutes: storedTask.completedStudyMinutes,
+                isTaskCompleted: storedTask.isTaskCompleted
+            )
+        }
+    }
+    
     func deleteTask(_ task: AcademicTask) throws {
         
         let taskID = task.id

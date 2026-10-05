@@ -68,7 +68,7 @@ struct GenerateStudyScheduleUseCaseTests {
         #expect(blocks[0].academicTaskID == task.id)
         #expect(blocks[0].plannedStudyMinutes == 120)
         #expect(blocks[1].plannedStudyMinutes == 60)
-
+        #expect(taskRepository.incompleteTaskQueryCount == 1)
         #expect(blockRepository.blocks.count == 2)
     }
     

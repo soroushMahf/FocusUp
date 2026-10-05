@@ -32,8 +32,7 @@ struct GenerateStudyScheduleUseCase {
         let maximumFocusMinutes = 240 // A planned study block cannot exceed the maximum focus session duration
         
         //fetching incomplete academic tasks
-        let tasks = try academicTaskRepository.fetchTasks()
-            .filter { !$0.isTaskCompleted }
+        let tasks = try academicTaskRepository.fetchIncompleteTasks()
         
         guard !tasks.isEmpty else {
             throw StudyScheduleError.noIncompleteTasks

@@ -14,6 +14,8 @@ protocol AcademicTaskRepository {
     
     func fetchTasks() throws -> [AcademicTask]
     
+    func fetchIncompleteTasks() throws -> [AcademicTask]
+    
     func updateTask(_ task: AcademicTask) throws
     
     func deleteTask(_ task: AcademicTask) throws
